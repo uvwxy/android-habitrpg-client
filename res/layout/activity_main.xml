@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityMain" >
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/name" />
+
+    <ProgressBar
+        android:id="@+id/pbXP"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/pbHP"
+        android:layout_below="@+id/pbHP"
+        android:layout_marginTop="2dp" />
+
+    <ImageView
+        android:id="@+id/ivChar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@string/your_character_icon"
+        android:src="@drawable/dead" />
+
+    <ProgressBar
+        android:id="@+id/pbHP"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/ivChar"
+        android:layout_below="@+id/tvGP" />
+
+    <TextView
+        android:id="@+id/tvGP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvName"
+        android:layout_below="@+id/tvName"
+        android:text="@string/_gold"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ExpandableListView
+        android:id="@+id/elvTasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pbXP"
+        android:layout_below="@+id/pbXP"
+        android:layout_marginTop="2dp" >
+
+    </ExpandableListView>
+
+</RelativeLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/btnRewardBuy"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/task_btn"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:focusable="false"
+        android:text="@string/buy" />
+
+    <ImageView
+        android:id="@+id/ivRewardIcon"
+        android:layout_width="@dimen/task_btn"
+        android:layout_height="@dimen/task_btn"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:src="@drawable/chest" />
+
+    <TextView
+        android:id="@+id/tvRewardPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnRewardBuy"
+        android:layout_alignBottom="@+id/btnRewardBuy"
+        android:layout_toLeftOf="@+id/btnRewardBuy"
+        android:text="@string/null_gold"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/tvRewardDescription"
+        android:layout_width="@dimen/task_height"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tvRewardPrice"
+        android:layout_toRightOf="@+id/ivRewardIcon"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>
