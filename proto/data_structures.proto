@@ -1,4 +1,4 @@
-package de.winteger.habitrpg.proto;
+package de.uvwxy.habitrpg.proto;
 // https://developers.google.com/protocol-buffers/docs/proto
 
 message User  {
