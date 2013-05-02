@@ -2,5 +2,6 @@
     <item android:id="@+id/itemSettings" android:menuCategory="system" android:title="@string/change_config" android:titleCondensed="@string/_gold" android:onClick="onMenuSettings"></item>
     <item android:id="@+id/item1" android:title="@string/refresh" android:titleCondensed="@string/refresh" android:onClick="onMenuRefresh"></item>
     <item android:id="@+id/item2" android:title="@string/report_issue" android:onClick="onMenuReportIssue"></item>
+    <item android:id="@+id/item3" android:onClick="onMenuOpenHabitRPGCom" android:title="@string/open_habitrpg_com"></item>
 
 </menu>

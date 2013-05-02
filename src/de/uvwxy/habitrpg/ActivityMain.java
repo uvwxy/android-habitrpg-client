@@ -37,7 +37,6 @@ public class ActivityMain extends Activity {
 	private TextView tvHPString = null;
 	private TextView tvXPString = null;
 
-	
 	private ExpandableListView elvTasks = null;
 	private ExpandableTaskViewAdapter etva = null;
 
@@ -55,10 +54,10 @@ public class ActivityMain extends Activity {
 
 		tvHP = (TextView) findViewById(R.id.tvHP);
 		tvXP = (TextView) findViewById(R.id.tvXP);
-		
+
 		tvHPString = (TextView) findViewById(R.id.tvHPString);
 		tvXPString = (TextView) findViewById(R.id.tvXPString);
-		
+
 		tvHP.setBackgroundColor(HabitColors.colorHP);
 		tvXP.setBackgroundColor(HabitColors.colorXP);
 
@@ -320,7 +319,7 @@ public class ActivityMain extends Activity {
 		updateUi(tvXP, habitCon.getToNextLevel(), exp);
 		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
 		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));
-		
+
 	}
 
 	public void onMenuSettings(MenuItem m) {
@@ -330,9 +329,17 @@ public class ActivityMain extends Activity {
 	public void onMenuRefresh(MenuItem m) {
 		updateHabit();
 	}
-	
-	public void onMenuReportIssue(MenuItem m){
-		String url = "https://bitbucket.org/uvwxy/android-habitrpg-client/issues?status=new&status=open";
+
+	public void onMenuReportIssue(MenuItem m) {
+		openUrl("https://bitbucket.org/uvwxy/android-habitrpg-client/issues?status=new&status=open");
+	}
+
+	public void onMenuOpenHabitRPGCom(MenuItem m) {
+		openUrl("https://habitrpg.com");
+
+	}
+
+	private void openUrl(String url) {
 		Intent i = new Intent(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(url));
 		startActivity(i);
