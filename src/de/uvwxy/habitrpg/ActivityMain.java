@@ -9,16 +9,16 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.uvwxy.habitrpg.R;
 import de.uvwxy.habitrpg.ExpandableTask.TaskType;
 import de.uvwxy.habitrpg.HabitSettings.OnSettingsSave;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
@@ -329,5 +329,12 @@ public class ActivityMain extends Activity {
 
 	public void onMenuRefresh(MenuItem m) {
 		updateHabit();
+	}
+	
+	public void onMenuReportIssue(MenuItem m){
+		String url = "https://bitbucket.org/uvwxy/android-habitrpg-client/issues?status=new&status=open";
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(url));
+		startActivity(i);
 	}
 }

@@ -40,5 +40,6 @@
     <string name="hp_">"HP: "</string>
     <string name="xp_">"XP: "</string>
     <string name="__">[...]</string>
+    <string name="report_issue">Report Issue</string>
 
 </resources>
