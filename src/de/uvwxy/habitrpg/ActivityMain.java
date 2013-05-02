@@ -114,13 +114,26 @@ public class ActivityMain extends Activity {
 
 	@Override
 	protected void onResume() {
-		if (!habitSet.isSet()) {
-			habitSet.show(settingsCallback);
-		} else {
-			updateHabit();
-		}
+		if (habitSet != null && habitSet.dialog.isShowing()) {
 
+			habitSet.loadDialogInput();
+
+		} else {
+		
+			if (!habitSet.isSet()) {
+				habitSet.show(settingsCallback);
+			} else {
+				updateHabit();
+			}
+			
+		}
 		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		habitSet.saveDialogInput();
+		super.onPause();
 	}
 
 	private void updateHabit() {
