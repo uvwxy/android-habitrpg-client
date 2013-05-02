@@ -29,9 +29,11 @@ public class ActivityMain extends Activity {
 
 	private RelativeLayout rlMain = null;
 	private TextView tvName = null;
-	private ProgressBar pbHP = null;
-	private ProgressBar pbXP = null;
 	private TextView tvGP = null;
+
+	private TextView tvHP = null;
+	private TextView tvXP = null;
+
 	private ExpandableListView elvTasks = null;
 	private ExpandableTaskViewAdapter etva = null;
 
@@ -45,11 +47,13 @@ public class ActivityMain extends Activity {
 		rlMain = (RelativeLayout) findViewById(R.id.rlMain);
 		rlMain.setBackgroundColor(HabitColors.colorBackground);
 		tvName = (TextView) findViewById(R.id.tvName);
-		pbHP = (ProgressBar) findViewById(R.id.pbHP);
-		pbHP.setBackgroundColor(HabitColors.colorHP);
-		pbXP = (ProgressBar) findViewById(R.id.pbXP);
-		pbXP.setBackgroundColor(HabitColors.colorXP);
 		tvGP = (TextView) findViewById(R.id.tvGP);
+
+		tvHP = (TextView) findViewById(R.id.tvHP);
+		tvXP = (TextView) findViewById(R.id.tvXP);
+		tvHP.setBackgroundColor(HabitColors.colorHP);
+		tvXP.setBackgroundColor(HabitColors.colorXP);
+
 		elvTasks = (ExpandableListView) findViewById(R.id.elvTasks);
 		ivChar = (ImageView) findViewById(R.id.ivChar);
 		etva = new ExpandableTaskViewAdapter(ctx, tasksList, habitCon, habitResultCallback);
@@ -119,20 +123,22 @@ public class ActivityMain extends Activity {
 			habitSet.loadDialogInput();
 
 		} else {
-		
+
 			if (!habitSet.isSet()) {
 				habitSet.show(settingsCallback);
 			} else {
 				updateHabit();
 			}
-			
+
 		}
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		habitSet.saveDialogInput();
+		if (habitSet != null && habitSet.dialog != null && habitSet.dialog.isShowing()) {
+			habitSet.saveDialogInput();
+		}
 		super.onPause();
 	}
 
@@ -264,12 +270,11 @@ public class ActivityMain extends Activity {
 
 	}
 
-	private void updateUi(final ProgressBar pb, final double max, final double value) {
+	private void updateUi(final TextView tvBar, final double max, final double value) {
 		Runnable uiThread = new Runnable() {
 			@Override
 			public void run() {
-				pb.setMax((int) max);
-				pb.setProgress((int) value);
+				tvBar.setWidth((int) (rlMain.getWidth() * (value / max)));
 			}
 		};
 
@@ -303,8 +308,8 @@ public class ActivityMain extends Activity {
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
 
 		updateUi(tvGP, format);
-		updateUi(pbHP, habitCon.getMaxHealth(), (int) hp);
-		updateUi(pbXP, habitCon.getToNextLevel(), (int) exp);
+		updateUi(tvHP, habitCon.getMaxHealth(), hp);
+		updateUi(tvXP, habitCon.getToNextLevel(), exp);
 
 	}
 

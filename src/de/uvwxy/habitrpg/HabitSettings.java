@@ -1,14 +1,16 @@
 package de.uvwxy.habitrpg;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import de.uvwxy.habitrpg.R;
 
 public class HabitSettings {
 
@@ -39,53 +41,60 @@ public class HabitSettings {
 
 	public void show(final OnSettingsSave oss) {
 
-		dialog = new Dialog(ctx);
+		LayoutInflater inflater = LayoutInflater.from(ctx);
+		final View addView;
 
-		dialog.setContentView(R.layout.dialog_settings);
-		dialog.setTitle("Please enter your config");
+		addView = inflater.inflate(R.layout.dialog_settings, null);
 
-		TextView tvURL = (TextView) dialog.findViewById(R.id.tvURL);
-		TextView tvUserID = (TextView) dialog.findViewById(R.id.btnUserID);
-		TextView tvAPIToken = (TextView) dialog.findViewById(R.id.tvAPIToken);
-		etServerURL = (EditText) dialog.findViewById(R.id.etServerURL);
-		etUserID = (EditText) dialog.findViewById(R.id.etUserID);
-		etAPIToken = (EditText) dialog.findViewById(R.id.etAPIToken);
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
+		alertDialog.setView(addView);
 
-		// TODO: dialog -> alarmdialog
-		Button btnSave = (Button) dialog.findViewById(R.id.btnSave);
-		Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+		TextView tvURL = (TextView) addView.findViewById(R.id.tvURL);
+		TextView tvUserID = (TextView) addView.findViewById(R.id.btnUserID);
+		TextView tvAPIToken = (TextView) addView.findViewById(R.id.tvAPIToken);
+		etServerURL = (EditText) addView.findViewById(R.id.etServerURL);
+		etUserID = (EditText) addView.findViewById(R.id.etUserID);
+		etAPIToken = (EditText) addView.findViewById(R.id.etAPIToken);
 
-		loadDialogInput();
-
-		btnCancel.setOnClickListener(new OnClickListener() {
+		alertDialog.setPositiveButton(ctx.getString(R.string.save), new DialogInterface.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-
-		btnSave.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
+			public void onClick(DialogInterface dialog, int which) {
 				saveDialogInput();
 				dialog.dismiss();
 				if (oss != null) {
 					oss.onSettingsSave();
 				}
-			}
+				dialog.dismiss();
 
+			}
 		});
+
+		alertDialog.setNegativeButton(ctx.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+
+			}
+		});
+
+		alertDialog.setTitle("Please enter your config");
+
+		dialog = alertDialog.create();
+
+		loadDialogInput();
 
 		dialog.show();
 	}
 
 	public void saveDialogInput() {
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putString(SET_API_TOKEN, etAPIToken.getText().toString().replace(" ", ""));
-		editor.putString(SET_USER_ID, etUserID.getText().toString().replace(" ", ""));
-		editor.putString(SET_URL, etServerURL.getText().toString().replace(" ", ""));
-		editor.commit();
+		if (etAPIToken != null && etUserID != null && etServerURL != null) {
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putString(SET_API_TOKEN, etAPIToken.getText().toString().replace(" ", ""));
+			editor.putString(SET_USER_ID, etUserID.getText().toString().replace(" ", ""));
+			editor.putString(SET_URL, etServerURL.getText().toString().replace(" ", ""));
+			editor.commit();
+		}
 
 	}
 

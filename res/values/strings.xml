@@ -23,33 +23,19 @@
     <color name="snow">#eee9e9</color>
 
     <string name="name">"Name: "</string>
-
     <string name="your_character_icon">Your character icon</string>
-
     <string name="_gold">"Gold: "</string>
-
     <string name="plus">+</string>
-
     <string name="minus">-</string>
-
     <string name="null_gold">0 G</string>
-
     <string name="buy">Buy</string>
-
     <string name="server_url">Server URL:</string>
-
     <string name="user_id">User ID:</string>
-
     <string name="api_token">API Token:</string>
-
     <string name="save">Save</string>
-
     <string name="cancel">Cancel</string>
-
     <string name="change_config">Change Config</string>
-
     <string name="cfg">Cfg.</string>
-
     <string name="refresh">Refresh</string>
 
 </resources>

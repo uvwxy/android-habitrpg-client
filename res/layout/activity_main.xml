@@ -12,16 +12,6 @@
         android:layout_marginTop="2dp"
         android:text="@string/name" />
 
-    <ProgressBar
-        android:id="@+id/pbXP"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/pbHP"
-        android:layout_below="@+id/pbHP"
-        android:layout_marginTop="2dp" />
-
     <ImageView
         android:id="@+id/ivChar"
         android:layout_width="wrap_content"
@@ -32,15 +22,6 @@
         android:contentDescription="@string/your_character_icon"
         android:src="@drawable/dead" />
 
-    <ProgressBar
-        android:id="@+id/pbHP"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/ivChar"
-        android:layout_below="@+id/tvGP" />
-
     <TextView
         android:id="@+id/tvGP"
         android:layout_width="wrap_content"
@@ -50,13 +31,28 @@
         android:text="@string/_gold"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <TextView
+        android:id="@+id/tvHP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvGP"
+        android:text=" " />
+
+    <TextView
+        android:id="@+id/tvXP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvHP"
+        android:text=" " />
+
     <ExpandableListView
         android:id="@+id/elvTasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/pbXP"
-        android:layout_below="@+id/pbXP"
-        android:layout_marginTop="2dp" >
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvXP" >
 
     </ExpandableListView>
 
