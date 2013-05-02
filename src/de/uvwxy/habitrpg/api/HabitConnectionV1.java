@@ -231,39 +231,50 @@ public class HabitConnectionV1 {
 
 	public int getWeapon() {
 		try {
-			return data.getJSONObject("items").getInt("weapon");
+			if (data != null) {
+				return data.getJSONObject("items").getInt("weapon");
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return 0;
 		}
+		return 0;
 
 	}
 
 	public int getArmor() {
 		try {
-			return data.getJSONObject("items").getInt("armor");
+			if (data != null) {
+				return data.getJSONObject("items").getInt("armor");
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return 0;
+
 		}
+		return 0;
 	}
 
 	public int getShield() {
 		try {
-			return data.getJSONObject("items").getInt("shield");
+			if (data != null) {
+				return data.getJSONObject("items").getInt("shield") - 1;
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return 0;
 		}
+		return 0;
+
 	}
 
 	public int getHead() {
 		try {
-			return data.getJSONObject("items").getInt("head");
+			if (data != null) {
+				return data.getJSONObject("items").getInt("head");
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return 0;
 		}
+		return 0;
+
 	}
 
 	public JSONArray getHabitIds() {
@@ -387,9 +398,9 @@ public class HabitConnectionV1 {
 		});
 
 		HttpResponse response = client.execute(post);
-//		StringWriter writer = new StringWriter();
-//
-//		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
+		//		StringWriter writer = new StringWriter();
+		//
+		//		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
 		return getStringFromInputStream(response.getEntity().getContent());
 	}
 
@@ -434,9 +445,9 @@ public class HabitConnectionV1 {
 		get.addHeader(new BasicHeader("x-api-key", apiToken));
 
 		HttpResponse response = client.execute(get);
-//		StringWriter writer = new StringWriter();
-//
-//		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
+		//		StringWriter writer = new StringWriter();
+		//
+		//		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
 		return getStringFromInputStream(response.getEntity().getContent());
 
 	}
@@ -444,20 +455,20 @@ public class HabitConnectionV1 {
 	public interface ServerResultCallback {
 		public void serverReply(String s);
 	}
-	
+
 	private static String getStringFromInputStream(InputStream is) {
-		 
+
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
- 
+
 		String line;
 		try {
- 
+
 			br = new BufferedReader(new InputStreamReader(is));
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
 			}
- 
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -469,8 +480,48 @@ public class HabitConnectionV1 {
 				}
 			}
 		}
- 
+
 		return sb.toString();
- 
+
+	}
+
+	public boolean isMale() {
+		try {
+			if (data_preferences != null && data_preferences.get("gender") != null) {
+				return data_preferences.get("gender").equals("m");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return true;
+		}
+
+		return true;
+	}
+
+	public String getHair() {
+		try {
+			if (data_preferences != null && data_preferences.get("hair") != null) {
+				return data_preferences.getString("hair");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return "blond";
+		}
+
+		return "blond";
+	}
+
+	public String getSkin() {
+		try {
+			if (data_preferences != null && data_preferences.get("gender") != null) {
+				return data_preferences.getString("skin");
+
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return "dead";
+		}
+
+		return "white";
 	}
 }

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import de.uvwxy.habitrpg.HabitSettings.OnSettingsSave;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
 import de.uvwxy.habitrpg.sprites.HabitColors;
+import de.uvwxy.habitrpg.sprites.SpriteFactoryChar;
 
 public class ActivityMain extends Activity {
 	private Context ctx = this;
@@ -115,6 +117,7 @@ public class ActivityMain extends Activity {
 		}
 
 		initGUI();
+		updateUiCharIcon();
 	}
 
 	@Override
@@ -310,6 +313,24 @@ public class ActivityMain extends Activity {
 		this.runOnUiThread(uiThread);
 	}
 
+	private void updateUiCharIcon() {
+		Runnable uiThread = new Runnable() {
+
+			@Override
+			public void run() {
+
+				Bitmap b;
+				if (habitCon != null) {
+					b = SpriteFactoryChar.createChar(ctx, habitCon, habitCon.isMale());
+				} else {
+					b = SpriteFactoryChar.createDefaultFemaleChar(ctx);
+				}
+				ivChar.setImageBitmap(b);
+			}
+		};
+		this.runOnUiThread(uiThread);
+	}
+
 	private void updateStats(double exp, double gp, double hp, double lvl, double delta) {
 		updateUi(tvName, getText(R.string.name) + habitCon.getUserName() + " [lvl: " + ((int) lvl) + "]");
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
@@ -319,7 +340,7 @@ public class ActivityMain extends Activity {
 		updateUi(tvXP, habitCon.getToNextLevel(), exp);
 		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
 		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));
-
+		updateUiCharIcon();
 	}
 
 	public void onMenuSettings(MenuItem m) {
