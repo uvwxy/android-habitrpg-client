@@ -28,10 +28,12 @@ public class HabitSettings {
 		this.ctx = ctx;
 	}
 
+	Dialog dialog;
+
 	public void show(final OnSettingsSave oss) {
 		final SharedPreferences settings = ctx.getSharedPreferences(PREF_ID, 0);
 
-		final Dialog dialog = new Dialog(ctx);
+		dialog = new Dialog(ctx);
 
 		dialog.setContentView(R.layout.dialog_settings);
 		dialog.setTitle("Please enter your config");
@@ -42,12 +44,10 @@ public class HabitSettings {
 		final EditText etServerURL = (EditText) dialog.findViewById(R.id.etServerURL);
 		final EditText etUserID = (EditText) dialog.findViewById(R.id.etUserID);
 		final EditText etAPIToken = (EditText) dialog.findViewById(R.id.etAPIToken);
-		
-		etServerURL.setText(settings.getString(SET_URL, "https://habitrpg.com/"));
+
+		etServerURL.setText(settings.getString(SET_URL, "https://habitrpg.com"));
 		etUserID.setText(settings.getString(SET_USER_ID, ""));
 		etAPIToken.setText(settings.getString(SET_API_TOKEN, ""));
-
-		
 
 		Button btnSave = (Button) dialog.findViewById(R.id.btnSave);
 		Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);

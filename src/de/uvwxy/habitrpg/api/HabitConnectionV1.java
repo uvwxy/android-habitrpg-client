@@ -1,10 +1,12 @@
 package de.uvwxy.habitrpg.api;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -385,10 +387,10 @@ public class HabitConnectionV1 {
 		});
 
 		HttpResponse response = client.execute(post);
-		StringWriter writer = new StringWriter();
-
-		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
-		return writer.toString();
+//		StringWriter writer = new StringWriter();
+//
+//		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
+		return getStringFromInputStream(response.getEntity().getContent());
 	}
 
 	private String getJSONResponse(String action) throws ClientProtocolException, IOException {
@@ -432,14 +434,43 @@ public class HabitConnectionV1 {
 		get.addHeader(new BasicHeader("x-api-key", apiToken));
 
 		HttpResponse response = client.execute(get);
-		StringWriter writer = new StringWriter();
-
-		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
-		return writer.toString();
+//		StringWriter writer = new StringWriter();
+//
+//		IOUtils.copy(response.getEntity().getContent(), writer, Charset.forName("UTF-8"));
+		return getStringFromInputStream(response.getEntity().getContent());
 
 	}
 
 	public interface ServerResultCallback {
 		public void serverReply(String s);
+	}
+	
+	private static String getStringFromInputStream(InputStream is) {
+		 
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+ 
+		String line;
+		try {
+ 
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+ 
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+ 
+		return sb.toString();
+ 
 	}
 }
