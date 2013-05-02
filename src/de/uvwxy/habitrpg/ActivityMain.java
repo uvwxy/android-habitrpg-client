@@ -114,7 +114,7 @@ public class ActivityMain extends Activity {
 
 	@Override
 	protected void onResume() {
-		if (habitSet != null && habitSet.dialog.isShowing()) {
+		if (habitSet != null && habitSet.dialog != null && habitSet.dialog.isShowing()) {
 
 			habitSet.loadDialogInput();
 
@@ -299,7 +299,7 @@ public class ActivityMain extends Activity {
 	}
 
 	private void updateStats(double exp, double gp, double hp, double lvl, double delta) {
-		updateUi(tvName, getText(R.string.name) + habitCon.getUserName() + "(" + ((int) lvl) + ")");
+		updateUi(tvName, getText(R.string.name) + habitCon.getUserName() + " [lvl: " + ((int) lvl) + "]");
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
 
 		updateUi(tvGP, format);
