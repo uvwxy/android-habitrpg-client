@@ -37,5 +37,8 @@
     <string name="change_config">Change Config</string>
     <string name="cfg">Cfg.</string>
     <string name="refresh">Refresh</string>
+    <string name="hp_">"HP: "</string>
+    <string name="xp_">"XP: "</string>
+    <string name="__">[...]</string>
 
 </resources>

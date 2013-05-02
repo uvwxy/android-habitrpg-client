@@ -1,6 +1,7 @@
 package de.uvwxy.habitrpg;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +34,10 @@ public class ActivityMain extends Activity {
 
 	private TextView tvHP = null;
 	private TextView tvXP = null;
+	private TextView tvHPString = null;
+	private TextView tvXPString = null;
 
+	
 	private ExpandableListView elvTasks = null;
 	private ExpandableTaskViewAdapter etva = null;
 
@@ -51,6 +55,10 @@ public class ActivityMain extends Activity {
 
 		tvHP = (TextView) findViewById(R.id.tvHP);
 		tvXP = (TextView) findViewById(R.id.tvXP);
+		
+		tvHPString = (TextView) findViewById(R.id.tvHPString);
+		tvXPString = (TextView) findViewById(R.id.tvXPString);
+		
 		tvHP.setBackgroundColor(HabitColors.colorHP);
 		tvXP.setBackgroundColor(HabitColors.colorXP);
 
@@ -310,7 +318,9 @@ public class ActivityMain extends Activity {
 		updateUi(tvGP, format);
 		updateUi(tvHP, habitCon.getMaxHealth(), hp);
 		updateUi(tvXP, habitCon.getToNextLevel(), exp);
-
+		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
+		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));
+		
 	}
 
 	public void onMenuSettings(MenuItem m) {

@@ -56,4 +56,21 @@
 
     </ExpandableListView>
 
+    <TextView
+        android:id="@+id/tvHPString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvHP"
+        android:layout_alignBottom="@+id/tvHP"
+        android:layout_centerHorizontal="true"
+        android:text="@string/__" />
+
+    <TextView
+        android:id="@+id/tvXPString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/elvTasks"
+        android:layout_centerHorizontal="true"
+        android:text="@string/__" />
+
 </RelativeLayout>
