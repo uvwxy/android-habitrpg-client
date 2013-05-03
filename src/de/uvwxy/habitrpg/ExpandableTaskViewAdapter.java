@@ -23,9 +23,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.uvwxy.habitrpg.R;
+import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
-import de.uvwxy.habitrpg.sprites.HabitColors;
 
 public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	private Context ctx;

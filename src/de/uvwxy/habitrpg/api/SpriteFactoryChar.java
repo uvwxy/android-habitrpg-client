@@ -1,4 +1,4 @@
-package de.uvwxy.habitrpg.sprites;
+package de.uvwxy.habitrpg.api;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,10 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import de.uvwxy.habitrpg.R;
-import de.uvwxy.habitrpg.api.HabitConnectionV1;
-import de.uvwxy.habitrpg.api.ISpriteConverter;
-import de.uvwxy.habitrpg.api.SpriteConverterFemale;
-import de.uvwxy.habitrpg.api.SpriteConverterMale;
 
 public class SpriteFactoryChar {
 

@@ -22,10 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.uvwxy.habitrpg.ExpandableTask.TaskType;
 import de.uvwxy.habitrpg.HabitSettings.OnSettingsSave;
+import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
+import de.uvwxy.habitrpg.api.SpriteFactoryChar;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
-import de.uvwxy.habitrpg.sprites.HabitColors;
-import de.uvwxy.habitrpg.sprites.SpriteFactoryChar;
 
 public class ActivityMain extends Activity {
 	private Context ctx = this;
