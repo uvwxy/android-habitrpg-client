@@ -53,7 +53,7 @@ public class HabitConnectionV1 {
 		super();
 	}
 
-	public void setConfig(String userId, String apiToken, String url) {
+	public void setConfig( String url, String userId, String apiToken) {
 		this.mUrl = url;
 		this.userId = userId;
 		this.apiToken = apiToken;

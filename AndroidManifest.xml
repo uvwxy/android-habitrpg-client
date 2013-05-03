@@ -17,12 +17,20 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="de.uvwxy.habitrpg.ActivityMain"
-            android:icon="@drawable/ic_launcher" >
+            android:icon="@drawable/ic_launcher" android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="de.uvwxy.habitrpg.ActivityAPISetup"
+            android:label="@string/title_activity_activity_apisetup"
+            android:parentActivityName="ActivityMain" android:configChanges="keyboardHidden|orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ActivityMain" />
         </activity>
     </application>
 

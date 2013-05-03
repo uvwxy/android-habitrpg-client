@@ -5,5 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="task_height">48dp</dimen>
     <dimen name="task_btn">42dp</dimen>
+    <dimen name="icon_width">48dp</dimen>
+    <dimen name="icon_height">48dp</dimen>
 
 </resources>

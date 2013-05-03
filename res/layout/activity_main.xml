@@ -5,54 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ActivityMain" >
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="@string/name" />
-
-    <ImageView
-        android:id="@+id/ivChar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="2dp"
-        android:contentDescription="@string/your_character_icon"
-        android:src="@drawable/dead" />
-
-    <TextView
-        android:id="@+id/tvGP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvName"
-        android:layout_below="@+id/tvName"
-        android:text="@string/_gold"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/tvHP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvGP"
-        android:text=" " />
-
-    <TextView
-        android:id="@+id/tvXP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvHP"
-        android:text=" " />
-
     <ExpandableListView
         android:id="@+id/elvTasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvXP" >
+        android:layout_below="@+id/tvXP"
+        android:layout_marginTop="4dp" >
 
     </ExpandableListView>
 
@@ -72,5 +31,54 @@
         android:layout_above="@+id/elvTasks"
         android:layout_centerHorizontal="true"
         android:text="@string/__" />
+
+    <TextView
+        android:id="@+id/tvGP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvName"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvName"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:text="@string/_gold"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageView
+        android:id="@+id/ivChar"
+        android:layout_width="@dimen/icon_width"
+        android:layout_height="@dimen/icon_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/your_character_icon"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dead" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/ivChar"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_toRightOf="@+id/ivChar"
+        android:text="@string/name" />
+
+    <TextView
+        android:id="@+id/tvHP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvGP"
+        android:layout_below="@+id/tvGP"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tvXP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvHP"
+        android:layout_alignLeft="@+id/tvHP"
+        android:text="" />
 
 </RelativeLayout>
