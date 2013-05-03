@@ -1,7 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/itemSettings" android:menuCategory="system" android:title="@string/change_config" android:titleCondensed="@string/_gold" android:onClick="onMenuSettings"></item>
-    <item android:id="@+id/item1" android:title="@string/refresh" android:titleCondensed="@string/refresh" android:onClick="onMenuRefresh"></item>
-    <item android:id="@+id/item2" android:title="@string/report_issue" android:onClick="onMenuReportIssue"></item>
-    <item android:id="@+id/item3" android:onClick="onMenuOpenHabitRPGCom" android:title="@string/open_habitrpg_com"></item>
+
+    <item
+        android:id="@+id/itemSettings"
+        android:title="@string/change_config">
+    </item>
+    <item
+        android:id="@+id/itemRefresh"
+        android:title="@string/refresh">
+    </item>
+    <item
+        android:id="@+id/itemReportIssue"
+        android:title="@string/report_issue">
+    </item>
+    <item
+        android:id="@+id/itemOpenHRPG"
+        android:title="@string/open_habitrpg_com">
+    </item>
 
 </menu>

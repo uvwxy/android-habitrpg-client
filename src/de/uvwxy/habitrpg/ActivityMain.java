@@ -153,6 +153,16 @@ public class ActivityMain extends Activity {
 	}
 
 	private void updateHabit() {
+
+		if (!habitSet.isSet()) {
+			habitSet.show(settingsCallback);
+			return;
+		}
+
+		if (habitCon == null) {
+			habitCon = new HabitConnectionV1();
+		}
+
 		String[] set = habitSet.readSettings();
 		habitCon.setConfig(set[0], set[1], set[2]);
 		Thread t = new Thread(backgroundWorker);
@@ -343,21 +353,37 @@ public class ActivityMain extends Activity {
 		updateUiCharIcon();
 	}
 
-	public void onMenuSettings(MenuItem m) {
-		habitSet.show(settingsCallback);
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		if (mnuRefresh.equals(item)) {
+			updateHabit();
+		}
+		if (mnuReportIssue.equals(item)) {
+			openUrl("https://bitbucket.org/uvwxy/android-habitrpg-client/issues?status=new&status=open");
+		}
+		if (mnuOpenHRPG.equals(item)) {
+			openUrl("https://habitrpg.com");
+
+		}
+		if (mnuConfig.equals(item)) {
+			habitSet.show(settingsCallback);
+		}
+
+		return super.onMenuItemSelected(featureId, item);
 	}
 
-	public void onMenuRefresh(MenuItem m) {
-		updateHabit();
-	}
+	MenuItem mnuRefresh;
+	MenuItem mnuReportIssue;
+	MenuItem mnuOpenHRPG;
+	MenuItem mnuConfig;
 
-	public void onMenuReportIssue(MenuItem m) {
-		openUrl("https://bitbucket.org/uvwxy/android-habitrpg-client/issues?status=new&status=open");
-	}
-
-	public void onMenuOpenHabitRPGCom(MenuItem m) {
-		openUrl("https://habitrpg.com");
-
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		mnuRefresh = menu.findItem(R.id.itemRefresh);
+		mnuReportIssue = menu.findItem(R.id.itemReportIssue);
+		mnuOpenHRPG = menu.findItem(R.id.itemOpenHRPG);
+		mnuConfig = menu.findItem(R.id.itemSettings);
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	private void openUrl(String url) {
