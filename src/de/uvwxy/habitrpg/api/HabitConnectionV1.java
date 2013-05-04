@@ -290,7 +290,7 @@ public class HabitConnectionV1 {
 	public int getWeapon() {
 		try {
 			if (data_main != null) {
-				return data_main.getJSONObject("items").getInt("weapon") - 1;
+				return data_main.getJSONObject("items").getInt("weapon");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -314,7 +314,7 @@ public class HabitConnectionV1 {
 	public int getShield() {
 		try {
 			if (data_main != null) {
-				return data_main.getJSONObject("items").getInt("shield") - 1;
+				return data_main.getJSONObject("items").getInt("shield");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -577,7 +577,7 @@ public class HabitConnectionV1 {
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return "dead";
+			return "white";
 		}
 
 		return "white";

@@ -67,6 +67,8 @@ public class SpriteConverterFemale implements ISpriteConverter {
 			return 27;
 		case 6:
 			return 32;
+		case -1:
+			return -1;
 		default:
 			return 33;
 		}
@@ -95,8 +97,10 @@ public class SpriteConverterFemale implements ISpriteConverter {
 			return 2;
 		case 5:
 			return 1;
-		default:
+		case 6: 
 			return 0;
+		default:
+			return 6;
 		}
 	}
 
@@ -122,6 +126,8 @@ public class SpriteConverterFemale implements ISpriteConverter {
 			return 8;
 		case 5:
 			return 7;
+		case -1:
+			return -1;
 		default:
 			return 12;
 		}

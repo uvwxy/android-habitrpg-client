@@ -11,7 +11,7 @@ public class SpriteConverterMale implements ISpriteConverter {
 		} else if (s.equals("brown")) {
 			return 21;
 		} else if (s.equals("white")) {
-			return 2;
+			return 22;
 		}
 
 		// default: "blond"
@@ -20,7 +20,6 @@ public class SpriteConverterMale implements ISpriteConverter {
 
 	@Override
 	public int getOMSkin(String s) {
-
 		if (s.equals("dead")) {
 			return 29;
 		} else if (s.equals("orc")) {
@@ -33,8 +32,8 @@ public class SpriteConverterMale implements ISpriteConverter {
 			return 33;
 		}
 
-		// default: "dead"
-		return 29;
+		// default: "white"
+		return 33;
 	}
 
 	public int getOMArmor(int i) {
@@ -51,6 +50,8 @@ public class SpriteConverterMale implements ISpriteConverter {
 			return 24;
 		case 5:
 			return 23;
+		case -1:
+			return -1;
 		default:
 			return 28;
 		}
@@ -72,8 +73,10 @@ public class SpriteConverterMale implements ISpriteConverter {
 			return 2;
 		case 5:
 			return 1;
-		default:
+		case 6:
 			return 0;
+		default:
+			return 6;
 		}
 	}
 
@@ -81,17 +84,17 @@ public class SpriteConverterMale implements ISpriteConverter {
 	public int getOMShield(int i) {
 		switch (i) {
 		case 0:
-			return 12;
+			return -1;
 		case 1:
-			return 11;
+			return 12;
 		case 2:
-			return 10;
+			return 11;
 		case 3:
-			return 9;
+			return 10;
 		case 4:
-			return 8;
+			return 9;
 		case 5:
-			return 7;
+			return 8;
 		default:
 			return 12;
 		}

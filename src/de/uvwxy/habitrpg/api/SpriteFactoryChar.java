@@ -89,7 +89,11 @@ public class SpriteFactoryChar {
 	}
 
 	public static void drawSprite(Bitmap bSrc, int offset, int width, Canvas c) {
-		Rect src = new Rect(offset - width, 0, offset, c.getHeight());
+		if (offset < 0) {
+			// dont draw "unset" weapons
+			return;
+		}
+		Rect src = new Rect(offset, 0, offset + width, c.getHeight());
 		RectF dst = new RectF(0, 0, c.getWidth(), c.getHeight());
 		Paint paint = new Paint();
 		c.drawBitmap(bSrc, src, dst, paint);
