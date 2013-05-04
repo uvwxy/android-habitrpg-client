@@ -235,7 +235,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	private int lightenColor(int color) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
-		hsv[1] *= 1.2f; // value component
+		hsv[1] *= 4f; // value component
 		color = Color.HSVToColor(hsv);
 		return color;
 	}
@@ -274,7 +274,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				if (cbDaily.isChecked()) {
 					tvDaily.setBackgroundColor(Color.LTGRAY);
 					tvDaily.setTextColor(Color.GRAY);
-					cbDaily.setBackgroundColor(Color.GRAY);
+					cbDaily.setBackgroundColor(lColor);
 				}
 				llDaily.setBackgroundColor(dColor);
 				if (isLastChild) {
