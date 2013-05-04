@@ -2,8 +2,6 @@ package de.uvwxy.habitrpg;
 
 import org.json.JSONArray;
 
-import android.util.Log;
-
 public class ExpandableTask {
 	private String taskTitle = "Habit";
 	// either habit, daily, todo, reward
@@ -11,7 +9,6 @@ public class ExpandableTask {
 	private TaskType type = TaskType.HABIT;
 
 	public void setList(JSONArray list, TaskType type) {
-		Log.i("HABIT", "List len: " + list.length());
 		this.listTasks = list;
 		this.type = type;
 	}
