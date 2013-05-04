@@ -82,7 +82,9 @@ public class SpriteFactoryChar {
 		drawSprite(sprites, isc.getOMHair(habitcon.getHair()) * w, w, canvas);
 		drawSprite(sprites, isc.getOMArmor(habitcon.getArmor()) * w, w, canvas);
 		drawSprite(sprites, isc.getOMShield(habitcon.getShield()) * w, w, canvas);
-		drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+		if (habitcon.showHelm()) {
+			drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+		}
 		drawSprite(sprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
 
 		return bm;

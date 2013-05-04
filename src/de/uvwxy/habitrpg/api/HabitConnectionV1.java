@@ -556,6 +556,19 @@ public class HabitConnectionV1 {
 		return true;
 	}
 
+	public boolean showHelm() {
+		try {
+			if (data_preferences != null && data_preferences.getBoolean("showHelm")) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return true;
+		}
+	}
+
 	public String getHair() {
 		try {
 			if (data_preferences != null && data_preferences.get("hair") != null) {

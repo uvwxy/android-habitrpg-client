@@ -1,5 +1,7 @@
 package de.uvwxy.habitrpg.api;
 
+import android.util.Log;
+
 public class SpriteConverterFemale implements ISpriteConverter {
 
 	@Override
@@ -26,6 +28,9 @@ public class SpriteConverterFemale implements ISpriteConverter {
 
 	@Override
 	public int getOMSkin(String s) {
+		
+		Log.i("CVR", "Srings s = " + s);
+		
 		if (s.equals("dead")) {
 			return 34;
 		} else if (s.equals("orc")) {
