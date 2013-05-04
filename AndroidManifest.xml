@@ -22,7 +22,7 @@
             android:icon="@drawable/ic_launcher" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
- 
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +36,7 @@
                 android:value="ActivityMain" />
         </activity>
 
-        <receiver android:name="WidgetHabitIcon" >
+        <receiver android:name="de.uvwxy.habitrpg.WidgetHabitIcon" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -45,6 +45,16 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/habit_icon_widget_info" />
         </receiver>
+
+        <activity
+            android:name="de.uvwxy.habitrpg.ActivityAbout"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="ActivityMain" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ActivityMain" />
+        </activity>
     </application>
 
 </manifest>

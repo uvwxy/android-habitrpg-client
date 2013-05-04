@@ -51,6 +51,7 @@ public class ActivityMain extends Activity {
 	private MenuItem mnuReportIssue;
 	private MenuItem mnuOpenHRPG;
 	private MenuItem mnuConfig;
+	private MenuItem mnuAbout;
 
 	private ExpandableListView elvTasks = null;
 	private ExpandableTaskViewAdapter etva = null;
@@ -292,7 +293,11 @@ public class ActivityMain extends Activity {
 			Intent intent = new Intent(this, ActivityAPISetup.class);
 			startActivityForResult(intent, REQUEST_HABIT_CONFIG);
 		}
-
+		if (mnuAbout.equals(item)) {
+			Intent intent = new Intent(this, ActivityAbout.class);
+			startActivity(intent);
+		}
+		
 		return super.onMenuItemSelected(featureId, item);
 	}
 
@@ -302,6 +307,7 @@ public class ActivityMain extends Activity {
 		mnuReportIssue = menu.findItem(R.id.itemReportIssue);
 		mnuOpenHRPG = menu.findItem(R.id.itemOpenHRPG);
 		mnuConfig = menu.findItem(R.id.itemSettings);
+		mnuAbout = menu.findItem(R.id.itemAbout);
 		return super.onPrepareOptionsMenu(menu);
 	}
 

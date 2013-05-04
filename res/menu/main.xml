@@ -16,5 +16,9 @@
         android:id="@+id/itemOpenHRPG"
         android:title="@string/open_habitrpg_com">
     </item>
+    <item
+        android:id="@+id/itemAbout"
+        android:title="@string/about">
+    </item>
 
 </menu>
