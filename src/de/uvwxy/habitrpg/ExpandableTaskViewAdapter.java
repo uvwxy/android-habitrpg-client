@@ -215,7 +215,15 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	private int darkenColor(int color) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
-		hsv[2] *= 0.8f; // value component
+		hsv[2] *= .8f; // value component
+		color = Color.HSVToColor(hsv);
+		return color;
+	}
+	
+	private int lightenColor(int color) {
+		float[] hsv = new float[3];
+		Color.colorToHSV(color, hsv);
+		hsv[2] *= .8f; // value component
 		color = Color.HSVToColor(hsv);
 		return color;
 	}
@@ -258,7 +266,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				llDaily.setBackgroundColor(dColor);
 				if (isLastChild) {
 					// TODO: add switch between apis
-					llDailyOuter.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_bodernotop));
+					llDailyOuter.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_boder_no_top));
 				}
 			} catch (JSONException e1) {
 				cbDaily.setText("[Error]}\n" + e1.getMessage());
@@ -362,8 +370,15 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		convertView = inf.inflate(R.layout.expandable_group, parent, false);
 
+		LinearLayout llGroup = (LinearLayout) convertView.findViewById(R.id.llGroup);
+		ImageView ivExpanderArrow = (ImageView) convertView.findViewById(R.id.ivExpanderArrow);
+		
 		if (isExpanded) {
-			Log.i("TEST", "Expanded");
+			llGroup.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_border_no_bottom));
+			ivExpanderArrow.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.arrow_up));
+		} else {
+			llGroup.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_border));
+			ivExpanderArrow.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.arrow_down));
 		}
 
 		TextView tvGroupTitle = (TextView) convertView.findViewById(R.id.tvGroupTitle);

@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/layout_bordersides"
+        android:background="@drawable/layout_border_sides"
         android:orientation="vertical" >
 
         <LinearLayout

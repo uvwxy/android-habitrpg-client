@@ -254,6 +254,14 @@ public class ActivityMain extends Activity {
 					}
 				});
 
+				
+				elvTasks.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						elvTasks.setIndicatorBounds(0,0);
+					}
+				});
 				Toast.makeText(ctx, "Loaded offline data, refresh to update", Toast.LENGTH_SHORT).show();
 			} else {
 				startBackgroundPullDataThread();
@@ -351,11 +359,11 @@ public class ActivityMain extends Activity {
 			@Override
 			public void run() {
 				etva.notifyDataSetChanged();
-
 				int count = etva.getGroupCount();
 				for (int i = 0; i < count; i++) {
 					elvTasks.expandGroup(i);
 				}
+				
 			}
 		};
 
