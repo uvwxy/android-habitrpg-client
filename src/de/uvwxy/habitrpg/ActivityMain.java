@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.uvwxy.habitrpg.ExpandableTask.TaskType;
@@ -136,6 +139,21 @@ public class ActivityMain extends Activity {
 		updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
 
 		updateTasksList();
+
+		updateWidget();
+	}
+
+	private void updateWidget() {
+		if (habitCon == null) {
+			return;
+		}
+
+		RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_habit_icon);
+		ComponentName thisWidget = new ComponentName(getApplicationContext(), WidgetHabitIcon.class);
+
+		Bitmap bitmap = SpriteFactoryChar.createChar(getApplicationContext(), habitCon, habitCon.isMale());
+		remoteViews.setImageViewBitmap(R.id.ivWidgetIcon, bitmap);
+		AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(thisWidget, remoteViews);
 	}
 
 	private void pullDataFromHabit() {
@@ -231,7 +249,6 @@ public class ActivityMain extends Activity {
 						}
 						updateUi(tvHP, habitCon.getMaxHealth(), habitCon.getHp());
 						updateUi(tvXP, habitCon.getToNextLevel(), habitCon.getExp());
-
 					}
 				});
 
