@@ -13,8 +13,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -104,7 +107,7 @@ public class ActivityMain extends Activity {
 		}
 	};
 
-	private void initGuiFromHabit(HabitConnectionV1 habitCon) {
+	private void initGuiFromHabit(final HabitConnectionV1 habitCon) {
 
 		ExpandableTask habits = new ExpandableTask();
 		ExpandableTask dailies = new ExpandableTask();
@@ -133,6 +136,19 @@ public class ActivityMain extends Activity {
 		tasksList.add(rewards);
 
 		updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
+
+		// this is used to fix the issue with tvHPString.getWidth == 0 during onResume
+		ViewTreeObserver vto = tvHPString.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@Override
+			public void onGlobalLayout() {
+				if (habitCon != null) {
+					updateUi(tvHP, habitCon.getMaxHealth(), habitCon.getHp());
+					updateUi(tvXP, habitCon.getToNextLevel(), habitCon.getExp());
+				}
+			}
+		});
 
 		updateTasksList();
 	}
@@ -334,6 +350,7 @@ public class ActivityMain extends Activity {
 		Runnable uiThread = new Runnable() {
 			@Override
 			public void run() {
+				Log.e("HABIT", "tvHPString.getWidth() = " + tvHPString.getWidth());
 				tvBar.setWidth((int) (tvHPString.getWidth() * (value / max)));
 			}
 		};
@@ -390,6 +407,7 @@ public class ActivityMain extends Activity {
 		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
 		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));
 		updateUiCharIcon();
+
 		updateUi(tvHP, habitCon.getMaxHealth(), hp);
 		updateUi(tvXP, habitCon.getToNextLevel(), exp);
 	}
