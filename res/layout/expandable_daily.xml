@@ -13,6 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:button="@drawable/custom_cb"
         android:text="CheckBox" />
 
 </RelativeLayout>
