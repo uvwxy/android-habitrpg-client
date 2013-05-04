@@ -223,7 +223,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	private int lightenColor(int color) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
-		hsv[2] *= .8f; // value component
+		hsv[1] *= 1.2f; // value component
 		color = Color.HSVToColor(hsv);
 		return color;
 	}
@@ -256,8 +256,9 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				habitClick(cbDaily, h.getString("id"), ISCHECKBOX);
 				int color = HabitColors.colorFromValue(h.getDouble("value"));
 				int dColor = darkenColor(color);
+				int lColor = lightenColor(color);
 				tvDaily.setBackgroundColor(HabitColors.colorFromValue(h.getDouble("value")));
-				cbDaily.setBackgroundColor(dColor);
+				cbDaily.setBackgroundColor(lColor);
 				if (cbDaily.isChecked()) {
 					tvDaily.setBackgroundColor(Color.LTGRAY);
 					tvDaily.setTextColor(Color.GRAY);
