@@ -262,6 +262,9 @@ public class ActivityMain extends Activity {
 						elvTasks.setIndicatorBounds(0,0);
 					}
 				});
+				
+				elvTasks.setSelector(android.R.color.transparent);
+
 				Toast.makeText(ctx, "Loaded offline data, refresh to update", Toast.LENGTH_SHORT).show();
 			} else {
 				startBackgroundPullDataThread();
