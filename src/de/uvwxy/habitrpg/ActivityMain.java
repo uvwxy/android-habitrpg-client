@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
@@ -163,7 +164,7 @@ public class ActivityMain extends Activity {
 
 	private void startBackgroundPullDataThread() {
 		habitCon.setConfig(habitSet.getURL(), habitSet.getUserToken(), habitSet.getApiToken());
-		killBackGroundThread();
+		killBackgroundThread();
 		startBackgroundThread();
 	}
 
@@ -172,7 +173,7 @@ public class ActivityMain extends Activity {
 		backGroundThread.start();
 	}
 
-	private void killBackGroundThread() {
+	private void killBackgroundThread() {
 		if (backGroundThread != null && backGroundThread.isAlive()) {
 			backGroundThread.interrupt();
 		}
@@ -263,9 +264,13 @@ public class ActivityMain extends Activity {
 
 	@Override
 	protected void onPause() {
-		// check if update thread needs to be killed
-		killBackGroundThread();
 		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		killBackgroundThread();
+		super.onDestroy();
 	}
 
 	private void showWD() {
@@ -382,11 +387,12 @@ public class ActivityMain extends Activity {
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
 
 		updateUi(tvGP, format);
-		updateUi(tvHP, habitCon.getMaxHealth(), hp);
-		updateUi(tvXP, habitCon.getToNextLevel(), exp);
+
 		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
 		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));
 		updateUiCharIcon();
+		updateUi(tvHP, habitCon.getMaxHealth(), hp);
+		updateUi(tvXP, habitCon.getToNextLevel(), exp);
 	}
 
 	private void openUrl(String url) {
