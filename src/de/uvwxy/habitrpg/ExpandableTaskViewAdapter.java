@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,9 +22,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import de.uvwxy.habitrpg.R;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
 import de.uvwxy.habitrpg.sprites.HabitColors;
@@ -53,13 +55,13 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 					final ProgressDialog waitingDialog = ProgressDialog.show(ctx, "Communicating", "Please wait...", true);
 					waitingDialog.setProgress(10);
 					waitingDialog.show();
-					
+
 					Thread t = new Thread(new Runnable() {
 
 						@Override
 						public void run() {
 							try {
-								
+
 								String result = habitCon.updateTask(taskId, upOrCompleted);
 								serverResultCallback.serverReply(result);
 								waitingDialog.dismiss();
@@ -210,12 +212,23 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 		return convertView;
 	}
 
+	private int darkenColor(int color) {
+		float[] hsv = new float[3];
+		Color.colorToHSV(color, hsv);
+		hsv[2] *= 0.8f; // value component
+		color = Color.HSVToColor(hsv);
+		return color;
+	}
+
 	private View getDailyView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
 		convertView = inf.inflate(R.layout.expandable_daily, parent, false);
 
 		final RelativeLayout rlDaily = (RelativeLayout) convertView.findViewById(R.id.rlDaily);
+		final LinearLayout llDaily = (LinearLayout) convertView.findViewById(R.id.llDaily);
+		final LinearLayout llDailyOuter = (LinearLayout) convertView.findViewById(R.id.llDailyOuter);
 		final CheckBox cbDaily = (CheckBox) convertView.findViewById(R.id.cbDaily);
+		final TextView tvDaily = (TextView) convertView.findViewById(R.id.tvDaily);
 		final ExpandableTask e = listOfAllTasks.get(groupPosition);
 
 		if (e != null && cbDaily != null) {
@@ -231,9 +244,22 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				//					cbDaily.setEnabled(false);
 				//				}
 
-				cbDaily.setText(h.getString("text"));
+				tvDaily.setText(h.getString("text"));
 				habitClick(cbDaily, h.getString("id"), ISCHECKBOX);
-				rlDaily.setBackgroundColor(HabitColors.colorFromValue(h.getDouble("value")));
+				int color = HabitColors.colorFromValue(h.getDouble("value"));
+				int dColor = darkenColor(color);
+				tvDaily.setBackgroundColor(HabitColors.colorFromValue(h.getDouble("value")));
+				cbDaily.setBackgroundColor(dColor);
+				if (cbDaily.isChecked()) {
+					tvDaily.setBackgroundColor(Color.LTGRAY);
+					tvDaily.setTextColor(Color.GRAY);
+					cbDaily.setBackgroundColor(Color.GRAY);
+				}
+				llDaily.setBackgroundColor(dColor);
+				if (isLastChild) {
+					// TODO: add switch between apis
+					llDailyOuter.setBackgroundDrawable(ctx.getResources().getDrawable( R.drawable.layout_bodernotop ));
+				}
 			} catch (JSONException e1) {
 				cbDaily.setText("[Error]}\n" + e1.getMessage());
 				cbDaily.setOnClickListener(GUIHelpers.mkToastListener(ctx, e1.getMessage()));
@@ -335,6 +361,10 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		convertView = inf.inflate(R.layout.expandable_group, parent, false);
+		
+		if (isExpanded){
+			Log.i("TEST", "Expanded");
+		}
 
 		TextView tvGroupTitle = (TextView) convertView.findViewById(R.id.tvGroupTitle);
 
