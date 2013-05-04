@@ -125,7 +125,7 @@ public class SpriteConverterFemale implements ISpriteConverter {
 		case 5:
 			return OFFSET_HEAD - 8;
 		default:
-			return 21;
+			return OFFSET_HEAD;
 		}
 
 	}

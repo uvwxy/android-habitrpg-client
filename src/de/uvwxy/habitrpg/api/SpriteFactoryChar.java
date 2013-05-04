@@ -82,7 +82,8 @@ public class SpriteFactoryChar {
 		drawSprite(sprites, isc.getOMSkin(habitcon.getSkin()) * w, w, canvas);
 		drawSprite(sprites, isc.getOMHair(habitcon.getHair()) * w, w, canvas);
 		int armorID = isc.getOMArmor(habitcon.getArmor());
-		if (!habitcon.isMale() && habitcon.getArmorSet().equals("v1")) {
+
+		if (!habitcon.isMale() && habitcon.getArmor() < 1 && habitcon.getArmorSet().equals("v1")) {
 			armorID++;
 		}
 		drawSprite(sprites, armorID * w, w, canvas);
@@ -91,7 +92,7 @@ public class SpriteFactoryChar {
 		if (habitcon.showHelm()) {
 			if (habitcon.isMale()) {
 				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
-			} else if (habitcon.getArmorSet().equals("v1") && habitcon.getHead() > 1) {
+			} else if (habitcon.getHead() <= 1 || habitcon.getArmorSet().equals("v1")) {
 				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
 			} else {
 				drawSprite(sprites, (isc.getOMHead(habitcon.getHead()) - 1) * w, w, canvas);
