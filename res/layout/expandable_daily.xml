@@ -27,6 +27,7 @@
                 android:id="@+id/cbDaily"
                 android:layout_width="@dimen/task_height"
                 android:layout_height="@dimen/task_height"
+                android:button="@drawable/custom_cb"
                 android:gravity="center_vertical|center_horizontal" />
 
             <TextView
@@ -37,7 +38,6 @@
                 android:paddingLeft="4dp"
                 android:text="TextView"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
         </LinearLayout>
     </LinearLayout>
 

@@ -21,6 +21,8 @@
     </string-array>
 
     <color name="snow">#eee9e9</color>
+    <color name="colorHP">#d64040</color>
+    <color name="colorXP">#ffcf42</color>
 
     <string name="name">"Name: "</string>
     <string name="your_character_icon">Your character icon</string>
@@ -39,8 +41,11 @@
     <string name="refresh">Refresh</string>
     <string name="hp_">"HP: "</string>
     <string name="xp_">"XP: "</string>
-    <string name="__">[...]</string>
+    <string name="__">[0/0]</string>
     <string name="report_issue">Report Issue</string>
     <string name="open_habitrpg_com">Open HabitRPG.com</string>
+    <string name="title_activity_activity_apisetup">ActivityAPISetup</string>
+    <string name="qr_code">QR Code</string>
+    <string name="refresh_icon">Refresh Widget Icon</string>
 
 </resources>

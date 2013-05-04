@@ -2,167 +2,127 @@ package de.uvwxy.habitrpg.api;
 
 public class SpriteConverterFemale implements ISpriteConverter {
 
-	@Override
+	private final int OFFSET_WEAPON = 6;
+	private final int OFFSET_ARMOR = 31;
+	private final int OFFSET_SHIELD = 11;
+	private final int OFFSET_HAIR = 25;
+	private final int OFFSET_SKIN = 37;
+	private final int OFFSET_HEAD = 21;
+
 	public int getOMHair(String s) {
-		if (s.equals("blond")) {
-			return 26;
-		} else if (s.equals("black")) {
-			return 25;
+
+		if (s.equals("white")) {
+			return OFFSET_HAIR - 3;
 		} else if (s.equals("brown")) {
-			return 24;
-		} else if (s.equals("white")) {
-			return 23;
+			return OFFSET_HAIR - 2;
+		} else if (s.equals("black")) {
+			return OFFSET_HAIR - 1;
+		} else if (s.equals("blond")) {
+			return OFFSET_HAIR;
 		}
 
 		// default: "blond"
-		return 26;
+		return OFFSET_HAIR;
 	}
-
-	public final static int[] SKIN_DEAD = { 0, 34 };
-	public final static int[] SKIN_ORC = { 1, 35 };
-	public final static int[] SKIN_ASIAN = { 2, 36 };
-	public final static int[] SKIN_BLACK = { 3, 37 };
-	public final static int[] SKIN_WHITE = { 4, 38 };
 
 	@Override
 	public int getOMSkin(String s) {
+
 		if (s.equals("dead")) {
-			return 34;
+			return OFFSET_SKIN - 4;
 		} else if (s.equals("orc")) {
-			return 35;
+			return OFFSET_SKIN - 3;
 		} else if (s.equals("asian")) {
-			return 36;
+			return OFFSET_SKIN - 2;
 		} else if (s.equals("black")) {
-			return 37;
+			return OFFSET_SKIN - 1;
 		} else if (s.equals("white")) {
-			return 38;
+			return OFFSET_SKIN;
 		}
 
-		// default: "blond"
-		return 26;
+		// default: "white"
+		return OFFSET_SKIN;
 	}
-
-	public final static int[] ARMOR_0 = { 0, 33 };
-	public final static int[] ARMOR_0_V2 = { 6, 32 };
-	public final static int[] ARMOR_1 = { 1, 31 };
-	public final static int[] ARMOR_2 = { 2, 30 };
-	public final static int[] ARMOR_3 = { 3, 29 };
-	public final static int[] ARMOR_4 = { 4, 28 };
-	public final static int[] ARMOR_5 = { 5, 27 };
 
 	@Override
 	public int getOMArmor(int i) {
 		switch (i) {
 		case 0:
-			return 33;
+			return OFFSET_ARMOR;
 		case 1:
-			return 31;
+			return OFFSET_ARMOR - 1;
 		case 2:
-			return 30;
+			return OFFSET_ARMOR - 2;
 		case 3:
-			return 29;
+			return OFFSET_ARMOR - 3;
 		case 4:
-			return 28;
+			return OFFSET_ARMOR - 4;
 		case 5:
-			return 27;
-		case 6:
-			return 32;
+			return OFFSET_ARMOR - 5;
 		default:
-			return 33;
+			return OFFSET_ARMOR;
 		}
 	}
-
-	public final static int[] WEAPON_0 = { 0, 6 };
-	public final static int[] WEAPON_1 = { 1, 5 };
-	public final static int[] WEAPON_2 = { 2, 4 };
-	public final static int[] WEAPON_3 = { 3, 3 };
-	public final static int[] WEAPON_4 = { 4, 2 };
-	public final static int[] WEAPON_5 = { 5, 1 };
-	public final static int[] WEAPON_6 = { 6, 0 };
 
 	@Override
 	public int getOMWeapon(int i) {
 		switch (i) {
 		case 0:
-			return 6;
+			return OFFSET_WEAPON;
 		case 1:
-			return 5;
+			return OFFSET_WEAPON - 1;
 		case 2:
-			return 4;
+			return OFFSET_WEAPON - 2;
 		case 3:
-			return 3;
+			return OFFSET_WEAPON - 3;
 		case 4:
-			return 2;
+			return OFFSET_WEAPON - 4;
 		case 5:
-			return 1;
+			return OFFSET_WEAPON - 5;
+		case 6:
+			return OFFSET_WEAPON - 6;
 		default:
-			return 0;
+			return OFFSET_WEAPON;
 		}
 	}
-
-	public final static int[] SHIELD_0 = { 0, 12 };
-	public final static int[] SHIELD_1 = { 1, 11 };
-	public final static int[] SHIELD_2 = { 2, 10 };
-	public final static int[] SHIELD_3 = { 3, 9 };
-	public final static int[] SHIELD_4 = { 4, 8 };
-	public final static int[] SHIELD_5 = { 5, 7 };
 
 	@Override
 	public int getOMShield(int i) {
 		switch (i) {
 		case 0:
-			return 12;
+			return -1;
 		case 1:
-			return 11;
+			return OFFSET_SHIELD;
 		case 2:
-			return 10;
+			return OFFSET_SHIELD - 1;
 		case 3:
-			return 9;
+			return OFFSET_SHIELD - 2;
 		case 4:
-			return 8;
+			return OFFSET_SHIELD - 3;
 		case 5:
-			return 7;
+			return OFFSET_SHIELD - 4;
 		default:
-			return 12;
+			return -1;
 		}
 	}
-
-	public final static int[] HEAD_0 = { 0, 22 };
-	public final static int[] HEAD_1 = { 1, 21 };
-	public final static int[] HEAD_2 = { 2, 20 };
-	public final static int[] HEAD_3 = { 3, 18 };
-	public final static int[] HEAD_4 = { 4, 16 };
-	public final static int[] HEAD_5 = { 5, 14 };
-	public final static int[] HEAD_2_V2 = { 6, 19 };
-	public final static int[] HEAD_3_V2 = { 7, 17 };
-	public final static int[] HEAD_4_V2 = { 8, 15 };
-	public final static int[] HEAD_5_V2 = { 9, 13 };
 
 	@Override
 	public int getOMHead(int i) {
 		switch (i) {
 		case 0:
-			return 22;
+			return OFFSET_HEAD;
 		case 1:
-			return 21;
+			return OFFSET_HEAD - 1;
 		case 2:
-			return 20;
+			return OFFSET_HEAD - 2;
 		case 3:
-			return 18;
+			return OFFSET_HEAD - 4;
 		case 4:
-			return 16;
+			return OFFSET_HEAD - 6;
 		case 5:
-			return 14;
-		case 6:
-			return 19;
-		case 7:
-			return 17;
-		case 8:
-			return 15;
-		case 9:
-			return 13;
+			return OFFSET_HEAD - 8;
 		default:
-			return 22;
+			return OFFSET_HEAD;
 		}
 
 	}

@@ -8,27 +8,34 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.uvwxy.habitrpg.ExpandableTask.TaskType;
-import de.uvwxy.habitrpg.HabitSettings.OnSettingsSave;
+import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
-import de.uvwxy.habitrpg.sprites.HabitColors;
-import de.uvwxy.habitrpg.sprites.SpriteFactoryChar;
+import de.uvwxy.habitrpg.api.SpriteFactoryChar;
 
 public class ActivityMain extends Activity {
 	private Context ctx = this;
+
+	private static final int REQUEST_HABIT_CONFIG = 2;
 
 	private RelativeLayout rlMain = null;
 	private TextView tvName = null;
@@ -38,33 +45,48 @@ public class ActivityMain extends Activity {
 	private TextView tvXP = null;
 	private TextView tvHPString = null;
 	private TextView tvXPString = null;
+	private ImageView ivChar = null;
+
+	private MenuItem mnuRefresh;
+	private MenuItem mnuReportIssue;
+	private MenuItem mnuOpenHRPG;
+	private MenuItem mnuConfig;
 
 	private ExpandableListView elvTasks = null;
 	private ExpandableTaskViewAdapter etva = null;
 
+	private ProgressDialog wd;
+
 	private HabitSettings habitSet = null;
 	private HabitConnectionV1 habitCon = null;
-	private ImageView ivChar = null;
+	private Runnable backgroundWorker = new Runnable() {
+
+		@Override
+		public void run() {
+			pullDataFromHabit();
+		}
+	};
+	private Thread backGroundThread;
 
 	private ArrayList<ExpandableTask> tasksList = new ArrayList<ExpandableTask>();
 
 	private void initGUI() {
 		rlMain = (RelativeLayout) findViewById(R.id.rlMain);
-		rlMain.setBackgroundColor(HabitColors.colorBackground);
+
 		tvName = (TextView) findViewById(R.id.tvName);
 		tvGP = (TextView) findViewById(R.id.tvGP);
-
 		tvHP = (TextView) findViewById(R.id.tvHP);
 		tvXP = (TextView) findViewById(R.id.tvXP);
-
 		tvHPString = (TextView) findViewById(R.id.tvHPString);
 		tvXPString = (TextView) findViewById(R.id.tvXPString);
 
+		ivChar = (ImageView) findViewById(R.id.ivChar);
+		elvTasks = (ExpandableListView) findViewById(R.id.elvTasks);
+
+		rlMain.setBackgroundColor(HabitColors.colorBackground);
 		tvHP.setBackgroundColor(HabitColors.colorHP);
 		tvXP.setBackgroundColor(HabitColors.colorXP);
 
-		elvTasks = (ExpandableListView) findViewById(R.id.elvTasks);
-		ivChar = (ImageView) findViewById(R.id.ivChar);
 		etva = new ExpandableTaskViewAdapter(ctx, tasksList, habitCon, habitResultCallback);
 		elvTasks.setAdapter(etva);
 	}
@@ -75,16 +97,11 @@ public class ActivityMain extends Activity {
 		public void serverReply(String s) {
 			try {
 				JSONObject o = new JSONObject(s);
-
 				double oldExp = habitCon.getExp();
 				double oldGp = habitCon.getGP();
+				// TODO: update exp/gp/hp/lvl in habitCon/JSON
 
-				// {"exp":147,"gp":39.605614452667595,"hp":50,"lvl":2,"delta":0.9506562257358427}
 				updateStats(o.getDouble("exp"), o.getDouble("gp"), o.getDouble("hp"), o.getDouble("lvl"), o.getDouble("delta"));
-				//double diffExp = o.getDouble("exp") - oldExp;
-				//double diffGp = o.getDouble("gp") - oldGp;
-				//String msg = String.format("EXP: " + (diffExp < 0 ? "+" : "") + " %.2f\nGP: " + (diffGp < 0 ? "+" : "") + "%.2f", diffExp, diffGp);
-				//updateUiToast(msg);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -93,13 +110,94 @@ public class ActivityMain extends Activity {
 		}
 	};
 
-	public OnSettingsSave settingsCallback = new OnSettingsSave() {
+	private void initGuiFromHabit(final HabitConnectionV1 habitCon) {
 
-		@Override
-		public void onSettingsSave() {
-			updateHabit();
+		ExpandableTask habits = new ExpandableTask();
+		ExpandableTask dailies = new ExpandableTask();
+		ExpandableTask todos = new ExpandableTask();
+		ExpandableTask rewards = new ExpandableTask();
+
+		habits.setTitle("Habits");
+		dailies.setTitle("Dailies");
+		todos.setTitle("Todos");
+		rewards.setTitle("Rewards");
+
+		habits.setType(TaskType.HABIT);
+		dailies.setType(TaskType.DAILY);
+		todos.setType(TaskType.TODO);
+		rewards.setType(TaskType.REWARD);
+
+		habits.setList(habitCon.getHabits(), TaskType.HABIT);
+		dailies.setList(habitCon.getDailies(), TaskType.DAILY);
+		todos.setList(habitCon.getTodos(), TaskType.TODO);
+		rewards.setList(habitCon.getRewards(), TaskType.REWARD);
+
+		tasksList.clear();
+		tasksList.add(habits);
+		tasksList.add(dailies);
+		tasksList.add(todos);
+		tasksList.add(rewards);
+
+		updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
+
+		updateTasksList();
+
+		updateWidget();
+	}
+
+	private void updateWidget() {
+		if (habitCon == null) {
+			return;
 		}
-	};
+
+		RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_habit_icon);
+		ComponentName thisWidget = new ComponentName(getApplicationContext(), WidgetHabitIcon.class);
+
+		Bitmap bitmap = SpriteFactoryChar.createChar(getApplicationContext(), habitCon, habitCon.isMale());
+		remoteViews.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bitmap, habitCon));
+		AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(thisWidget, remoteViews);
+	}
+
+	private void pullDataFromHabit() {
+		// do this on a thread
+		if (habitCon.isUp()) {
+			showWD();
+			if (habitCon.loadRemoteData()) {
+				wd.setProgress(1);
+
+				initGuiFromHabit(habitCon);
+				wd.setProgress(2);
+
+				habitCon.storeLocalData(ctx);
+			} else {
+
+				updateUi(tvName, getText(R.string.name) + "Could not load user data, is the setup correct?" + " " + "(Menu -> \"Change Config\")");
+			}
+
+			dismissWD();
+		} else {
+			updateUi(tvName, getText(R.string.name) + "Could not find server");
+			updateUiToast("Please take a look at the server settings");
+		}
+
+	}
+
+	private void startBackgroundPullDataThread() {
+		habitCon.setConfig(habitSet.getURL(), habitSet.getUserToken(), habitSet.getApiToken());
+		killBackgroundThread();
+		startBackgroundThread();
+	}
+
+	private void startBackgroundThread() {
+		backGroundThread = new Thread(backgroundWorker);
+		backGroundThread.start();
+	}
+
+	private void killBackgroundThread() {
+		if (backGroundThread != null && backGroundThread.isAlive()) {
+			backGroundThread.interrupt();
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +207,8 @@ public class ActivityMain extends Activity {
 		habitSet = new HabitSettings(this);
 		habitCon = new HabitConnectionV1();
 
-		if (!habitSet.isSet()) {
-			habitSet.show(null);
-		} else {
-			String[] set = habitSet.readSettings();
-			habitCon.setConfig(set[0], set[1], set[2]);
+		if (habitSet.isSet()) {
+			habitCon.setConfig(habitSet.getURL(), habitSet.getUserToken(), habitSet.getApiToken());
 		}
 
 		initGUI();
@@ -127,120 +222,98 @@ public class ActivityMain extends Activity {
 	}
 
 	@Override
-	protected void onResume() {
-		if (habitSet != null && habitSet.dialog != null && habitSet.dialog.isShowing()) {
-
-			habitSet.loadDialogInput();
-
-		} else {
-
-			if (!habitSet.isSet()) {
-				habitSet.show(settingsCallback);
-			} else {
-				updateHabit();
-			}
-
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != RESULT_OK) {
+			return;
 		}
+
+		switch (requestCode) {
+		case REQUEST_HABIT_CONFIG:
+			if (data != null) {
+				habitSet.saveConfig(data.getStringExtra(ActivityAPISetup.SERVER_URL), data.getStringExtra(ActivityAPISetup.USER_TOKEN),
+						data.getStringExtra(ActivityAPISetup.API_TOKEN));
+			}
+		default:
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		if (habitSet.isSet()) {
+			if (habitCon.loadLocalData(ctx)) {
+				initGuiFromHabit(habitCon);
+				tvHP.post(new Runnable() {
+
+					@Override
+					public void run() {
+						if (habitCon == null) {
+							return;
+						}
+						updateUi(tvHP, habitCon.getMaxHealth(), habitCon.getHp());
+						updateUi(tvXP, habitCon.getToNextLevel(), habitCon.getExp());
+					}
+				});
+
+				Toast.makeText(ctx, "Loaded offline data, refresh to update", Toast.LENGTH_SHORT).show();
+			} else {
+				startBackgroundPullDataThread();
+			}
+		} else {
+			updateUi(tvName, getText(R.string.name) + "Please setup your HabitRPG." + " " + "(Menu -> \"Change Config\")");
+		}
+
 		super.onResume();
 	}
 
 	@Override
-	protected void onPause() {
-		if (habitSet != null && habitSet.dialog != null && habitSet.dialog.isShowing()) {
-			habitSet.saveDialogInput();
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		if (mnuRefresh.equals(item)) {
+			startBackgroundPullDataThread();
 		}
+		if (mnuReportIssue.equals(item)) {
+			openUrl("https://bitbucket.org/uvwxy/android-habitrpg-client/issues?status=new&status=open");
+		}
+		if (mnuOpenHRPG.equals(item)) {
+			openUrl("https://habitrpg.com");
+
+		}
+		if (mnuConfig.equals(item)) {
+			Intent intent = new Intent(this, ActivityAPISetup.class);
+			startActivityForResult(intent, REQUEST_HABIT_CONFIG);
+		}
+
+		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		mnuRefresh = menu.findItem(R.id.itemRefresh);
+		mnuReportIssue = menu.findItem(R.id.itemReportIssue);
+		mnuOpenHRPG = menu.findItem(R.id.itemOpenHRPG);
+		mnuConfig = menu.findItem(R.id.itemSettings);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	protected void onPause() {
 		super.onPause();
 	}
 
-	private void updateHabit() {
-
-		if (!habitSet.isSet()) {
-			habitSet.show(settingsCallback);
-			return;
-		}
-
-		if (habitCon == null) {
-			habitCon = new HabitConnectionV1();
-		}
-
-		String[] set = habitSet.readSettings();
-		habitCon.setConfig(set[0], set[1], set[2]);
-		Thread t = new Thread(backgroundWorker);
-		t.start();
+	@Override
+	protected void onDestroy() {
+		killBackgroundThread();
+		super.onDestroy();
 	}
-
-	private Runnable backgroundWorker = new Runnable() {
-
-		@Override
-		public void run() {
-			if (habitCon.isUp()) {
-				showWD();
-				if (habitCon.fetchData()) {
-					wd.setProgress(1);
-
-					updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
-
-					ExpandableTask habits = new ExpandableTask();
-					ExpandableTask dailies = new ExpandableTask();
-					ExpandableTask todos = new ExpandableTask();
-					ExpandableTask rewards = new ExpandableTask();
-
-					habits.setTitle("Habits");
-					dailies.setTitle("Dailies");
-					todos.setTitle("Todos");
-					rewards.setTitle("Rewards");
-
-					habits.setType(TaskType.HABIT);
-					dailies.setType(TaskType.DAILY);
-					todos.setType(TaskType.TODO);
-					rewards.setType(TaskType.REWARD);
-
-					habits.setList(habitCon.getHabits(), TaskType.HABIT);
-					setWDProgress("Downloaded habits..", 2);
-
-					dailies.setList(habitCon.getDailies(), TaskType.DAILY);
-					setWDProgress("Downloaded dailies..", 3);
-
-					todos.setList(habitCon.getTodos(), TaskType.TODO);
-					setWDProgress("Downloaded todos..", 4);
-
-					rewards.setList(habitCon.getRewards(), TaskType.REWARD);
-					setWDProgress("Downloaded rewards..", 5);
-
-					tasksList.clear();
-					tasksList.add(habits);
-					tasksList.add(dailies);
-					tasksList.add(todos);
-					tasksList.add(rewards);
-
-					updateTasksList();
-					setWDProgress("Updated UI..", 6);
-
-				} else {
-
-					updateUi(tvName, getText(R.string.name) + "Could not load user data");
-				}
-
-				dismissWD();
-			} else {
-				updateUi(tvName, getText(R.string.name) + "Could not find server");
-				updateUiToast("Please take a look at the server settings");
-			}
-
-		}
-	};
-
-	ProgressDialog wd;
 
 	private void showWD() {
 		Runnable uiThread = new Runnable() {
 			@Override
 			public void run() {
 				wd = ProgressDialog.show(ctx, "Downloading data", "Please wait...", true);
-				wd.setMax(6);
+				wd.setMax(2);
 				wd.setCancelable(false);
 				wd.setProgress(0);
-				wd.setTitle("Fetching data");
+				wd.setTitle("Connecting to " + habitSet.getURL());
 				wd.setMessage("Downloading data");
 				wd.show();
 			}
@@ -294,7 +367,8 @@ public class ActivityMain extends Activity {
 		Runnable uiThread = new Runnable() {
 			@Override
 			public void run() {
-				tvBar.setWidth((int) (rlMain.getWidth() * (value / max)));
+				Log.e("HABIT", "tvHPString.getWidth() = " + tvHPString.getWidth());
+				tvBar.setWidth((int) (tvHPString.getWidth() * (value / max)));
 			}
 		};
 
@@ -333,7 +407,7 @@ public class ActivityMain extends Activity {
 				if (habitCon != null) {
 					b = SpriteFactoryChar.createChar(ctx, habitCon, habitCon.isMale());
 				} else {
-					b = SpriteFactoryChar.createDefaultFemaleChar(ctx);
+					b = SpriteFactoryChar.createDefaultMaleChar(ctx);
 				}
 				ivChar.setImageBitmap(b);
 			}
@@ -346,44 +420,13 @@ public class ActivityMain extends Activity {
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
 
 		updateUi(tvGP, format);
-		updateUi(tvHP, habitCon.getMaxHealth(), hp);
-		updateUi(tvXP, habitCon.getToNextLevel(), exp);
+
 		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
 		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));
 		updateUiCharIcon();
-	}
 
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		if (mnuRefresh.equals(item)) {
-			updateHabit();
-		}
-		if (mnuReportIssue.equals(item)) {
-			openUrl("https://bitbucket.org/uvwxy/android-habitrpg-client/issues?status=new&status=open");
-		}
-		if (mnuOpenHRPG.equals(item)) {
-			openUrl("https://habitrpg.com");
-
-		}
-		if (mnuConfig.equals(item)) {
-			habitSet.show(settingsCallback);
-		}
-
-		return super.onMenuItemSelected(featureId, item);
-	}
-
-	MenuItem mnuRefresh;
-	MenuItem mnuReportIssue;
-	MenuItem mnuOpenHRPG;
-	MenuItem mnuConfig;
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		mnuRefresh = menu.findItem(R.id.itemRefresh);
-		mnuReportIssue = menu.findItem(R.id.itemReportIssue);
-		mnuOpenHRPG = menu.findItem(R.id.itemOpenHRPG);
-		mnuConfig = menu.findItem(R.id.itemSettings);
-		return super.onPrepareOptionsMenu(menu);
+		updateUi(tvHP, habitCon.getMaxHealth(), hp);
+		updateUi(tvXP, habitCon.getToNextLevel(), exp);
 	}
 
 	private void openUrl(String url) {

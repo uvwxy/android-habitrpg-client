@@ -1,4 +1,4 @@
-package de.uvwxy.habitrpg.sprites;
+package de.uvwxy.habitrpg.api;
 
 import android.graphics.Color;
 
