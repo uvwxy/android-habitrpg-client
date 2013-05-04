@@ -1,7 +1,5 @@
 package de.uvwxy.habitrpg.api;
 
-import android.util.Log;
-
 public class SpriteConverterFemale implements ISpriteConverter {
 
 	private final int OFFSET_WEAPON = 6;
@@ -29,7 +27,6 @@ public class SpriteConverterFemale implements ISpriteConverter {
 
 	@Override
 	public int getOMSkin(String s) {
-		Log.i("CVR", "SKIN: " + s);
 
 		if (s.equals("dead")) {
 			return OFFSET_SKIN - 4;
