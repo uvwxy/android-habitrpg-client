@@ -16,8 +16,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -136,19 +134,6 @@ public class ActivityMain extends Activity {
 		tasksList.add(rewards);
 
 		updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
-
-		// this is used to fix the issue with tvHPString.getWidth == 0 during onResume
-		ViewTreeObserver vto = tvHPString.getViewTreeObserver();
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-			@Override
-			public void onGlobalLayout() {
-				if (habitCon != null) {
-					updateUi(tvHP, habitCon.getMaxHealth(), habitCon.getHp());
-					updateUi(tvXP, habitCon.getToNextLevel(), habitCon.getExp());
-				}
-			}
-		});
 
 		updateTasksList();
 	}
