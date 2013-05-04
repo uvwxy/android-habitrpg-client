@@ -222,6 +222,19 @@ public class ActivityMain extends Activity {
 		if (habitSet.isSet()) {
 			if (habitCon.loadLocalData(ctx)) {
 				initGuiFromHabit(habitCon);
+				tvHP.post(new Runnable() {
+
+					@Override
+					public void run() {
+						if (habitCon == null) {
+							return;
+						}
+						updateUi(tvHP, habitCon.getMaxHealth(), habitCon.getHp());
+						updateUi(tvXP, habitCon.getToNextLevel(), habitCon.getExp());
+
+					}
+				});
+
 				Toast.makeText(ctx, "Loaded offline data, refresh to update", Toast.LENGTH_SHORT).show();
 			} else {
 				startBackgroundPullDataThread();
