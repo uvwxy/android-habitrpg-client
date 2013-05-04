@@ -174,7 +174,8 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 		convertView = inf.inflate(R.layout.expandable_habit, parent, false);
 
-		final RelativeLayout rlHabit = (RelativeLayout) convertView.findViewById(R.id.rlHabit);
+		final RelativeLayout rlHabitInner = (RelativeLayout) convertView.findViewById(R.id.rlHabitInner);
+		final LinearLayout llHabitOuter = (LinearLayout) convertView.findViewById(R.id.llHabitOuter);
 		final TextView tvHabit = (TextView) convertView.findViewById(R.id.tvHabit);
 		final Button btnPlus = (Button) convertView.findViewById(R.id.btnPlus);
 		final Button btnMinus = (Button) convertView.findViewById(R.id.btnMinus);
@@ -186,22 +187,33 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 			try {
 				JSONObject h = list.getJSONObject(childPosition);
+				
+				int color = HabitColors.colorFromValue(h.getDouble("value"));
+				int dColor = darkenColor(color);
+				int lColor = lightenColor(color);
 
 				if (!h.getBoolean("up")) {
-					btnPlus.setVisibility(View.INVISIBLE);
+					btnPlus.setVisibility(View.GONE);
 				} else {
 					habitClick(btnPlus, h.getString("id"), UP);
+					btnPlus.setBackgroundColor(lColor);
 				}
 
 				if (!h.getBoolean("down")) {
-					btnMinus.setVisibility(View.INVISIBLE);
+					btnMinus.setVisibility(View.GONE);
 				} else {
 					habitClick(btnMinus, h.getString("id"), DOWN);
+					btnMinus.setBackgroundColor(lColor);
 				}
 
 				tvHabit.setText(h.getString("text"));
-
-				rlHabit.setBackgroundColor(HabitColors.colorFromValue(h.getDouble("value")));
+				tvHabit.setBackgroundColor(color);
+				rlHabitInner.setBackgroundColor(dColor);
+				
+				if (isLastChild) {
+					// TODO: add switch between apis
+					llHabitOuter.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_boder_no_top));
+				}
 			} catch (JSONException e1) {
 				tvHabit.setText("[Error]}\n" + e1.getMessage());
 				tvHabit.setOnClickListener(GUIHelpers.mkToastListener(ctx, e1.getMessage()));
@@ -219,7 +231,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 		color = Color.HSVToColor(hsv);
 		return color;
 	}
-	
+
 	private int lightenColor(int color) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
@@ -284,7 +296,10 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 		convertView = inf.inflate(R.layout.expandable_todo, parent, false);
 
 		final RelativeLayout rlTodo = (RelativeLayout) convertView.findViewById(R.id.rlTodo);
+		final LinearLayout llTodo = (LinearLayout) convertView.findViewById(R.id.llTodo);
+		final LinearLayout llTodoOuter = (LinearLayout) convertView.findViewById(R.id.llTodoOuter);
 		final CheckBox cbTodo = (CheckBox) convertView.findViewById(R.id.cbTodo);
+		final TextView tvTodo = (TextView) convertView.findViewById(R.id.tvTodo);
 
 		ExpandableTask e = listOfAllTasks.get(groupPosition);
 
@@ -296,9 +311,22 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 				cbTodo.setChecked(h.getBoolean("completed"));
 
-				cbTodo.setText(h.getString("text"));
-				habitClick(cbTodo, h.getString("id"), ISCHECKBOX);
-				rlTodo.setBackgroundColor(HabitColors.colorFromValue(h.getDouble("value")));
+				tvTodo.setText(h.getString("text"));
+				int color = HabitColors.colorFromValue(h.getDouble("value"));
+				int dColor = darkenColor(color);
+				int lColor = lightenColor(color);
+				tvTodo.setBackgroundColor(HabitColors.colorFromValue(h.getDouble("value")));
+				cbTodo.setBackgroundColor(lColor);
+				if (cbTodo.isChecked()) {
+					tvTodo.setBackgroundColor(Color.LTGRAY);
+					tvTodo.setTextColor(Color.GRAY);
+					cbTodo.setBackgroundColor(Color.GRAY);
+				}
+				llTodo.setBackgroundColor(dColor);
+				if (isLastChild) {
+					// TODO: add switch between apis
+					llTodoOuter.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_boder_no_top));
+				}
 
 			} catch (JSONException e1) {
 				cbTodo.setText("[Error]}\n" + e1.getMessage());
@@ -373,7 +401,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 		LinearLayout llGroup = (LinearLayout) convertView.findViewById(R.id.llGroup);
 		ImageView ivExpanderArrow = (ImageView) convertView.findViewById(R.id.ivExpanderArrow);
-		
+
 		if (isExpanded) {
 			llGroup.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_border_no_bottom));
 			ivExpanderArrow.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.arrow_up));
