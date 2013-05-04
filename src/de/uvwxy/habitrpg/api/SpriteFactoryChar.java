@@ -97,6 +97,8 @@ public class SpriteFactoryChar {
 			} else {
 				drawSprite(sprites, (isc.getOMHead(habitcon.getHead()) - 1) * w, w, canvas);
 			}
+		} else {
+			drawSprite(sprites, isc.getOMHead(0) * w, w, canvas);
 		}
 		drawSprite(sprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
 
