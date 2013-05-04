@@ -13,6 +13,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -152,7 +154,7 @@ public class ActivityMain extends Activity {
 		ComponentName thisWidget = new ComponentName(getApplicationContext(), WidgetHabitIcon.class);
 
 		Bitmap bitmap = SpriteFactoryChar.createChar(getApplicationContext(), habitCon, habitCon.isMale());
-		remoteViews.setImageViewBitmap(R.id.ivWidgetIcon, bitmap);
+		remoteViews.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bitmap, habitCon));
 		AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(thisWidget, remoteViews);
 	}
 

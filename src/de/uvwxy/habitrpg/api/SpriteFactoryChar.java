@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -113,5 +114,29 @@ public class SpriteFactoryChar {
 		RectF dst = new RectF(0, 0, c.getWidth(), c.getHeight());
 		Paint paint = new Paint();
 		c.drawBitmap(bSrc, src, dst, paint);
+	}
+
+	public static Bitmap addColorHPXPBars(Bitmap bmp, HabitConnectionV1 habitCon) {
+		if (bmp == null) {
+			throw new RuntimeException("bmp can not be null");
+		}
+		if (habitCon == null) {
+			return bmp;
+		}
+
+		int w = bmp.getWidth(), h = bmp.getHeight();
+		int barHeight = 6;
+
+		Bitmap bm = Bitmap.createBitmap(w, h + barHeight * 2, Bitmap.Config.ARGB_8888);
+		Canvas c = new Canvas(bm);
+		
+		Paint paint = new Paint();
+		c.drawBitmap(bmp, new Matrix(), paint);
+		paint.setColor(HabitColors.colorHP);
+		c.drawRect(0, c.getHeight() - barHeight * 2, (float) (c.getWidth() * habitCon.getHp() / habitCon.getMaxHealth()), c.getHeight() - (barHeight + 1),
+				paint);
+		paint.setColor(HabitColors.colorXP);
+		c.drawRect(0, c.getHeight() - barHeight, (float) (c.getWidth() * habitCon.getExp() / habitCon.getToNextLevel()), c.getHeight() - 1, paint);
+		return bm;
 	}
 }

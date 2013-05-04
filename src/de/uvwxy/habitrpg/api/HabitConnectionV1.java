@@ -34,7 +34,7 @@ import android.util.Log;
 
 public class HabitConnectionV1 {
 	private static final String HABIT_SAV = "habit.sav";
-
+	
 	private String mUrl;
 
 	private String userId;
@@ -52,6 +52,8 @@ public class HabitConnectionV1 {
 	private double gp = Double.MIN_VALUE;
 	private double hp = Double.MIN_VALUE;
 	private double lvl = Double.MIN_VALUE;
+	
+	
 
 	public HabitConnectionV1() {
 		super();

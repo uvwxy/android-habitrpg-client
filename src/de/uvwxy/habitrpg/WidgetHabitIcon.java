@@ -6,9 +6,12 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
 import de.uvwxy.habitrpg.api.SpriteFactoryChar;
 
@@ -31,11 +34,12 @@ public class WidgetHabitIcon extends AppWidgetProvider {
 			views.setOnClickPendingIntent(R.id.ivWidgetIcon, pendingIntent);
 
 			HabitConnectionV1 habitCon = new HabitConnectionV1();
-			
+
 			if (views != null && habitCon.loadLocalData(context)) {
 				Log.i("HABITWIDGET", "ID:" + appWidgetId);
+
 				Bitmap bmp = SpriteFactoryChar.createChar(context, habitCon, habitCon.isMale());
-				views.setImageViewBitmap(R.id.ivWidgetIcon, bmp);
+				views.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bmp, habitCon));
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 				Toast.makeText(context, "Icon refreshed", Toast.LENGTH_SHORT).show();
 			} else {
