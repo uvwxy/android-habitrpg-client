@@ -290,7 +290,7 @@ public class HabitConnectionV1 {
 	public int getWeapon() {
 		try {
 			if (data_main != null) {
-				return data_main.getJSONObject("items").getInt("weapon");
+				return data_main.getJSONObject("items").getInt("weapon") - 1;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.uvwxy.habitrpg"
+    android:installLocation="internalOnly"
     android:versionCode="5"
     android:versionName="1.0.4" >
 
@@ -11,7 +12,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -21,7 +22,7 @@
             android:icon="@drawable/ic_launcher" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+ 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,15 +35,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ActivityMain" />
         </activity>
-        <activity
-            android:name="de.uvwxy.habitrpg.ActivityWidgetAction"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
 
-        <receiver android:name="de.uvwxy.habitrpg.WidgetHabitIcon" >
+        <receiver android:name="WidgetHabitIcon" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

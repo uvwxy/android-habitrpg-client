@@ -76,13 +76,14 @@ public class SpriteFactoryChar {
 		Canvas canvas = new Canvas(bm);
 
 		ISpriteConverter isc = male ? scm : scf;
+		Bitmap sprites = male ? maleSprites : femaleSprites;
 
-		drawSprite(maleSprites, isc.getOMSkin(habitcon.getSkin()) * w, w, canvas);
-		drawSprite(maleSprites, isc.getOMHair(habitcon.getHair()) * w, w, canvas);
-		drawSprite(maleSprites, isc.getOMArmor(habitcon.getArmor()) * w, w, canvas);
-		drawSprite(maleSprites, isc.getOMShield(habitcon.getShield()) * w, w, canvas);
-		drawSprite(maleSprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
-		drawSprite(maleSprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
+		drawSprite(sprites, isc.getOMSkin(habitcon.getSkin()) * w, w, canvas);
+		drawSprite(sprites, isc.getOMHair(habitcon.getHair()) * w, w, canvas);
+		drawSprite(sprites, isc.getOMArmor(habitcon.getArmor()) * w, w, canvas);
+		drawSprite(sprites, isc.getOMShield(habitcon.getShield()) * w, w, canvas);
+		drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+		drawSprite(sprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
 
 		return bm;
 	}

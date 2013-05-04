@@ -22,19 +22,18 @@ public class WidgetHabitIcon extends AppWidgetProvider {
 			int appWidgetId = appWidgetIds[i];
 
 			// Create an Intent to launch ExampleActivity
-			Intent intent = new Intent(context, ActivityWidgetAction.class);
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
-
+			Intent intent = new Intent(context, ActivityMain.class);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
 			// Get the layout for the App Widget and attach an on-click listener
 			// to the button
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_habit_icon);
-//			views.setOnClickPendingIntent(R.id.ivWidgetIcon, pendingIntent);
+			views.setOnClickPendingIntent(R.id.ivWidgetIcon, pendingIntent);
 
 			HabitConnectionV1 habitCon = new HabitConnectionV1();
-
+			
 			if (views != null && habitCon.loadLocalData(context)) {
+				Log.i("HABITWIDGET", "ID:" + appWidgetId);
 				Bitmap bmp = SpriteFactoryChar.createChar(context, habitCon, habitCon.isMale());
 				views.setImageViewBitmap(R.id.ivWidgetIcon, bmp);
 				appWidgetManager.updateAppWidget(appWidgetId, views);
