@@ -117,13 +117,13 @@ public class SpriteConverterFemale implements ISpriteConverter {
 		case 1:
 			return OFFSET_HEAD - 1;
 		case 2:
-			return OFFSET_HEAD - 3;
+			return OFFSET_HEAD - 2;
 		case 3:
-			return OFFSET_HEAD - 5;
+			return OFFSET_HEAD - 4;
 		case 4:
-			return OFFSET_HEAD - 7;
+			return OFFSET_HEAD - 6;
 		case 5:
-			return OFFSET_HEAD - 9;
+			return OFFSET_HEAD - 8;
 		default:
 			return 21;
 		}

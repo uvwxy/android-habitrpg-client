@@ -82,19 +82,19 @@ public class SpriteFactoryChar {
 		drawSprite(sprites, isc.getOMSkin(habitcon.getSkin()) * w, w, canvas);
 		drawSprite(sprites, isc.getOMHair(habitcon.getHair()) * w, w, canvas);
 		int armorID = isc.getOMArmor(habitcon.getArmor());
-		if (habitcon.getArmorSet().equals("v1")) {
+		if (!habitcon.isMale() && habitcon.getArmorSet().equals("v1")) {
 			armorID++;
 		}
 		drawSprite(sprites, armorID * w, w, canvas);
 
 		drawSprite(sprites, isc.getOMShield(habitcon.getShield()) * w, w, canvas);
 		if (habitcon.showHelm()) {
-			if (habitcon.isMale() || habitcon.getArmorSet().equals("v1")) {
+			if (habitcon.isMale()) {
 				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
-			} else if (habitcon.getArmorSet().equals("v2") && habitcon.getHead() > 1) {
-				drawSprite(sprites, (isc.getOMHead(habitcon.getHead()) + 1) * w, w, canvas);
+			} else if (habitcon.getArmorSet().equals("v1") && habitcon.getHead() > 1) {
+				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
 			} else {
-				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+				drawSprite(sprites, (isc.getOMHead(habitcon.getHead()) - 1) * w, w, canvas);
 			}
 		}
 		drawSprite(sprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
