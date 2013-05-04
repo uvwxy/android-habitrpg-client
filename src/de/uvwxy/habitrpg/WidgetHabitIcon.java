@@ -41,6 +41,7 @@ public class WidgetHabitIcon extends AppWidgetProvider {
 				Bitmap bmp = SpriteFactoryChar.createChar(context, habitCon, habitCon.isMale());
 				views.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bmp, habitCon));
 				appWidgetManager.updateAppWidget(appWidgetId, views);
+				
 				Toast.makeText(context, "Icon refreshed", Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(context, "There was a problem loading local data", Toast.LENGTH_SHORT).show();
