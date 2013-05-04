@@ -398,6 +398,12 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		convertView = inf.inflate(R.layout.expandable_group, parent, false);
+		
+		if(listOfAllTasks.get(groupPosition).getTitle().equals("dummy")){
+			convertView = inf.inflate(R.layout.expandable_dummy, parent, false);
+			return convertView;
+		}
+		
 
 		LinearLayout llGroup = (LinearLayout) convertView.findViewById(R.id.llGroup);
 		ImageView ivExpanderArrow = (ImageView) convertView.findViewById(R.id.ivExpanderArrow);

@@ -138,6 +138,9 @@ public class ActivityMain extends Activity {
 		tasksList.add(dailies);
 		tasksList.add(todos);
 		tasksList.add(rewards);
+		ExpandableTask dummy = new ExpandableTask();
+		dummy.setTitle("dummy");
+		tasksList.add(dummy);
 
 		updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
 
