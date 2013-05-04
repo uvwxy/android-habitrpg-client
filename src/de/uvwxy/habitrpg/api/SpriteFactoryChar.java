@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 import de.uvwxy.habitrpg.R;
 
 public class SpriteFactoryChar {
@@ -80,10 +81,21 @@ public class SpriteFactoryChar {
 
 		drawSprite(sprites, isc.getOMSkin(habitcon.getSkin()) * w, w, canvas);
 		drawSprite(sprites, isc.getOMHair(habitcon.getHair()) * w, w, canvas);
-		drawSprite(sprites, isc.getOMArmor(habitcon.getArmor()) * w, w, canvas);
+		int armorID = isc.getOMArmor(habitcon.getArmor());
+		if (habitcon.getArmorSet().equals("v1")) {
+			armorID++;
+		}
+		drawSprite(sprites, armorID * w, w, canvas);
+
 		drawSprite(sprites, isc.getOMShield(habitcon.getShield()) * w, w, canvas);
 		if (habitcon.showHelm()) {
-			drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+			if (habitcon.isMale() || habitcon.getArmorSet().equals("v1")) {
+				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+			} else if (habitcon.getArmorSet().equals("v2") && habitcon.getHead() > 1) {
+				drawSprite(sprites, (isc.getOMHead(habitcon.getHead()) + 1) * w, w, canvas);
+			} else {
+				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+			}
 		}
 		drawSprite(sprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
 

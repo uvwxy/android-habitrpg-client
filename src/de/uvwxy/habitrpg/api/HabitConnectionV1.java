@@ -145,6 +145,12 @@ public class HabitConnectionV1 {
 		try {
 			data_auth = data.getJSONObject("auth");
 			data_preferences = data.getJSONObject("preferences");
+			
+			
+			Log.i("HABIT", "Prefs: "+ data_preferences.toString());
+			Log.i("HABIT", "Items: "+ data.getJSONObject("items").toString());
+			
+			
 			JSONObject tasks = data.getJSONObject("tasks");
 
 			data_habits = new JSONArray();
@@ -584,7 +590,7 @@ public class HabitConnectionV1 {
 
 	public String getSkin() {
 		try {
-			if (data_preferences != null && data_preferences.get("gender") != null) {
+			if (data_preferences != null && data_preferences.get("skin") != null) {
 				return data_preferences.getString("skin");
 
 			}
@@ -594,5 +600,20 @@ public class HabitConnectionV1 {
 		}
 
 		return "white";
+	}
+	
+	public String getArmorSet() {
+		try {
+			if (data_preferences != null && data_preferences.get("armorSet") != null) {
+				Log.i("ARMORSET", "armorset: " + data_preferences.getString("armorSet"));
+				return data_preferences.getString("armorSet");
+
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return "v1";
+		}
+
+		return "v1";
 	}
 }
