@@ -104,51 +104,50 @@ public class ActivityMain extends Activity {
 		}
 	};
 
+	private void initGuiFromHabit(HabitConnectionV1 habitCon) {
+
+		ExpandableTask habits = new ExpandableTask();
+		ExpandableTask dailies = new ExpandableTask();
+		ExpandableTask todos = new ExpandableTask();
+		ExpandableTask rewards = new ExpandableTask();
+
+		habits.setTitle("Habits");
+		dailies.setTitle("Dailies");
+		todos.setTitle("Todos");
+		rewards.setTitle("Rewards");
+
+		habits.setType(TaskType.HABIT);
+		dailies.setType(TaskType.DAILY);
+		todos.setType(TaskType.TODO);
+		rewards.setType(TaskType.REWARD);
+
+		habits.setList(habitCon.getHabits(), TaskType.HABIT);
+		dailies.setList(habitCon.getDailies(), TaskType.DAILY);
+		todos.setList(habitCon.getTodos(), TaskType.TODO);
+		rewards.setList(habitCon.getRewards(), TaskType.REWARD);
+
+		tasksList.clear();
+		tasksList.add(habits);
+		tasksList.add(dailies);
+		tasksList.add(todos);
+		tasksList.add(rewards);
+
+		updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
+
+		updateTasksList();
+	}
+
 	private void pullDataFromHabit() {
 		// do this on a thread
 		if (habitCon.isUp()) {
 			showWD();
-			if (habitCon.fetchData()) {
+			if (habitCon.loadRemoteData()) {
 				wd.setProgress(1);
 
-				updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
+				initGuiFromHabit(habitCon);
+				wd.setProgress(2);
 
-				ExpandableTask habits = new ExpandableTask();
-				ExpandableTask dailies = new ExpandableTask();
-				ExpandableTask todos = new ExpandableTask();
-				ExpandableTask rewards = new ExpandableTask();
-
-				habits.setTitle("Habits");
-				dailies.setTitle("Dailies");
-				todos.setTitle("Todos");
-				rewards.setTitle("Rewards");
-
-				habits.setType(TaskType.HABIT);
-				dailies.setType(TaskType.DAILY);
-				todos.setType(TaskType.TODO);
-				rewards.setType(TaskType.REWARD);
-
-				habits.setList(habitCon.getHabits(), TaskType.HABIT);
-				setWDProgress("Downloaded habits..", 2);
-
-				dailies.setList(habitCon.getDailies(), TaskType.DAILY);
-				setWDProgress("Downloaded dailies..", 3);
-
-				todos.setList(habitCon.getTodos(), TaskType.TODO);
-				setWDProgress("Downloaded todos..", 4);
-
-				rewards.setList(habitCon.getRewards(), TaskType.REWARD);
-				setWDProgress("Downloaded rewards..", 5);
-
-				tasksList.clear();
-				tasksList.add(habits);
-				tasksList.add(dailies);
-				tasksList.add(todos);
-				tasksList.add(rewards);
-
-				updateTasksList();
-				setWDProgress("Updated UI..", 6);
-
+				habitCon.storeLocalData(ctx);
 			} else {
 
 				updateUi(tvName, getText(R.string.name) + "Could not load user data, is the setup correct?" + " " + "(Menu -> \"Change Config\")");
@@ -220,7 +219,12 @@ public class ActivityMain extends Activity {
 	@Override
 	protected void onResume() {
 		if (habitSet.isSet()) {
-			startBackgroundPullDataThread();
+			if (habitCon.loadLocalData(ctx)) {
+				initGuiFromHabit(habitCon);
+				Toast.makeText(ctx, "Loaded offline data, refresh to update", Toast.LENGTH_SHORT).show();
+			} else {
+				startBackgroundPullDataThread();
+			}
 		} else {
 			updateUi(tvName, getText(R.string.name) + "Please setup your HabitRPG." + " " + "(Menu -> \"Change Config\")");
 		}
@@ -269,7 +273,7 @@ public class ActivityMain extends Activity {
 			@Override
 			public void run() {
 				wd = ProgressDialog.show(ctx, "Downloading data", "Please wait...", true);
-				wd.setMax(6);
+				wd.setMax(2);
 				wd.setCancelable(false);
 				wd.setProgress(0);
 				wd.setTitle("Connecting to " + habitSet.getURL());
@@ -326,7 +330,7 @@ public class ActivityMain extends Activity {
 		Runnable uiThread = new Runnable() {
 			@Override
 			public void run() {
-				tvBar.setWidth((int) (tvName.getWidth() * (value / max)));
+				tvBar.setWidth((int) (tvHPString.getWidth() * (value / max)));
 			}
 		};
 

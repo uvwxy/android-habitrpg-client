@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/widget_habit_icon"
+    android:previewImage="@drawable/dead"
+    android:updatePeriodMillis="14400000"
+    android:widgetCategory="home_screen"
+    android:resizeMode="horizontal|vertical" >
+
+</appwidget-provider> <!-- android:resizeMode="horizontal|vertical" -->
+<!-- android:widgetCategory="home_screen|keyguard" -->
+<!-- android:initialKeyguardLayout="@layout/example_keyguard" -->
+<!-- android:configure="de.uvwxy.habitrpg.ActivityConfigureWidget" -->

@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="de.uvwxy.habitrpg.ActivityMain"
-            android:icon="@drawable/ic_launcher" android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:icon="@drawable/ic_launcher" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,12 +27,30 @@
         </activity>
         <activity
             android:name="de.uvwxy.habitrpg.ActivityAPISetup"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_activity_apisetup"
-            android:parentActivityName="ActivityMain" android:configChanges="keyboardHidden|orientation|screenSize">
+            android:parentActivityName="ActivityMain" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ActivityMain" />
         </activity>
+        <activity
+            android:name="de.uvwxy.habitrpg.ActivityWidgetAction"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="de.uvwxy.habitrpg.WidgetHabitIcon" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/habit_icon_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

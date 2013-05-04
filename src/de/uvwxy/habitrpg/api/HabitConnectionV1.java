@@ -1,10 +1,12 @@
 package de.uvwxy.habitrpg.api;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.nio.charset.Charset;
 
 import org.apache.http.Header;
@@ -28,14 +30,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
 
 public class HabitConnectionV1 {
+	private static final String HABIT_SAV = "habit.sav";
+
 	private String mUrl;
 
 	private String userId;
 	private String apiToken;
-	private JSONObject data;
+	private JSONObject data_main;
 	private JSONObject data_auth;
 	private JSONObject data_preferences;
 	private JSONArray data_habits;
@@ -53,7 +58,7 @@ public class HabitConnectionV1 {
 		super();
 	}
 
-	public void setConfig( String url, String userId, String apiToken) {
+	public void setConfig(String url, String userId, String apiToken) {
 		this.mUrl = url;
 		this.userId = userId;
 		this.apiToken = apiToken;
@@ -74,11 +79,70 @@ public class HabitConnectionV1 {
 		}
 	}
 
-	public boolean fetchData() {
+	public boolean storeLocalData(Context ctx) {
+		if (data_main == null) {
+			return false;
+		}
 
+		String dataJSON = data_main.toString();
+		try {
+			FileOutputStream fout = ctx.openFileOutput(HABIT_SAV, Context.MODE_PRIVATE);
+			fout.write(dataJSON.getBytes());
+		} catch (FileNotFoundException e) {
+			Log.e("HABIT", "Error: " + e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			Log.e("HABIT", "Error: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public boolean loadLocalData(Context ctx) {
+		JSONObject data = null;
+		try {
+			FileInputStream fin = ctx.openFileInput(HABIT_SAV);
+			String dataJSON = getStringFromInputStream(fin);
+			if (dataJSON == null) {
+				Log.e("HABIT", "Error: dataJSON was null");
+				return false;
+			}
+			data = new JSONObject(dataJSON);
+			data_main = data;
+			return setupData(data);
+		} catch (FileNotFoundException e) {
+			Log.e("HABIT", "Error: " + e.getMessage());
+			e.printStackTrace();
+		} catch (JSONException e) {
+			Log.e("HABIT", "Error: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean loadRemoteData() {
+		JSONObject data;
 		try {
 			data = new JSONObject(getJSONResponse("/api/v1/user"));
+			data_main = data;
+			return setupData(data);
+		} catch (ClientProtocolException e) {
+			Log.e("HABIT", "Error: " + e.getMessage());
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			Log.e("HABIT", "Error: " + e.getMessage());
+			e.printStackTrace();
+		}
 
+		return false;
+	}
+
+	public boolean setupData(JSONObject data) {
+
+		try {
 			data_auth = data.getJSONObject("auth");
 			data_preferences = data.getJSONObject("preferences");
 			JSONObject tasks = data.getJSONObject("tasks");
@@ -113,13 +177,7 @@ public class HabitConnectionV1 {
 			}
 
 			return true;
-		} catch (ClientProtocolException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
-			e.printStackTrace();
 		} catch (JSONException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
 			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		}
@@ -146,7 +204,7 @@ public class HabitConnectionV1 {
 
 	public double getExp() {
 		try {
-			return data.getJSONObject("stats").getDouble("exp");
+			return data_main.getJSONObject("stats").getDouble("exp");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return 0;
@@ -155,7 +213,7 @@ public class HabitConnectionV1 {
 
 	public double getHp() {
 		try {
-			return data.getJSONObject("stats").getDouble("hp");
+			return data_main.getJSONObject("stats").getDouble("hp");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return 0;
@@ -164,7 +222,7 @@ public class HabitConnectionV1 {
 
 	public double getLevel() {
 		try {
-			return data.getJSONObject("stats").getDouble("lvl");
+			return data_main.getJSONObject("stats").getDouble("lvl");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return 0;
@@ -173,7 +231,7 @@ public class HabitConnectionV1 {
 
 	public double getToNextLevel() {
 		try {
-			return data.getJSONObject("stats").getDouble("toNextLevel");
+			return data_main.getJSONObject("stats").getDouble("toNextLevel");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return 0;
@@ -182,7 +240,7 @@ public class HabitConnectionV1 {
 
 	public double getMaxHealth() {
 		try {
-			return data.getJSONObject("stats").getDouble("maxHealth");
+			return data_main.getJSONObject("stats").getDouble("maxHealth");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return 0;
@@ -191,7 +249,7 @@ public class HabitConnectionV1 {
 
 	public double getGP() {
 		try {
-			return data.getJSONObject("stats").getDouble("gp");
+			return data_main.getJSONObject("stats").getDouble("gp");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return 0;
@@ -200,7 +258,7 @@ public class HabitConnectionV1 {
 
 	public boolean isPartyLeader() {
 		try {
-			return data.getJSONObject("party").getBoolean("leader");
+			return data_main.getJSONObject("party").getBoolean("leader");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return false;
@@ -209,7 +267,7 @@ public class HabitConnectionV1 {
 
 	public String getPartyID() {
 		try {
-			return data.getJSONObject("party").getString("current");
+			return data_main.getJSONObject("party").getString("current");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
@@ -222,7 +280,7 @@ public class HabitConnectionV1 {
 
 	public String getPartyInvitation() {
 		try {
-			return data.getJSONObject("party").getString("invitation");
+			return data_main.getJSONObject("party").getString("invitation");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
@@ -231,8 +289,8 @@ public class HabitConnectionV1 {
 
 	public int getWeapon() {
 		try {
-			if (data != null) {
-				return data.getJSONObject("items").getInt("weapon");
+			if (data_main != null) {
+				return data_main.getJSONObject("items").getInt("weapon");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -243,8 +301,8 @@ public class HabitConnectionV1 {
 
 	public int getArmor() {
 		try {
-			if (data != null) {
-				return data.getJSONObject("items").getInt("armor");
+			if (data_main != null) {
+				return data_main.getJSONObject("items").getInt("armor");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -255,8 +313,8 @@ public class HabitConnectionV1 {
 
 	public int getShield() {
 		try {
-			if (data != null) {
-				return data.getJSONObject("items").getInt("shield") - 1;
+			if (data_main != null) {
+				return data_main.getJSONObject("items").getInt("shield") - 1;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -267,8 +325,8 @@ public class HabitConnectionV1 {
 
 	public int getHead() {
 		try {
-			if (data != null) {
-				return data.getJSONObject("items").getInt("head");
+			if (data_main != null) {
+				return data_main.getJSONObject("items").getInt("head");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -279,7 +337,7 @@ public class HabitConnectionV1 {
 
 	public JSONArray getHabitIds() {
 		try {
-			return data.getJSONArray("habitIds");
+			return data_main.getJSONArray("habitIds");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
@@ -288,7 +346,7 @@ public class HabitConnectionV1 {
 
 	public JSONArray getDailyIds() {
 		try {
-			return data.getJSONArray("dailyIds");
+			return data_main.getJSONArray("dailyIds");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
@@ -297,7 +355,7 @@ public class HabitConnectionV1 {
 
 	public JSONArray getTodoIds() {
 		try {
-			return data.getJSONArray("todoIds");
+			return data_main.getJSONArray("todoIds");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
