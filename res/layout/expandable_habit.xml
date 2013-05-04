@@ -28,8 +28,9 @@
                 android:layout_height="@dimen/task_height"
                 android:layout_marginRight="1dp"
                 android:background="@drawable/layout_border"
+                android:drawableRight="@drawable/button_plus"
                 android:focusable="false"
-                android:text="@string/plus" />
+                android:text="" />
 
             <Button
                 android:id="@+id/btnMinus"
@@ -38,8 +39,9 @@
                 android:layout_marginRight="1dp"
                 android:layout_toRightOf="@+id/btnPlus"
                 android:background="@drawable/layout_border"
+                android:drawableRight="@drawable/button_minus"
                 android:focusable="false"
-                android:text="@string/minus" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/tvHabit"
@@ -52,7 +54,6 @@
                 android:paddingRight="4dp"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
         </RelativeLayout>
     </LinearLayout>
 
