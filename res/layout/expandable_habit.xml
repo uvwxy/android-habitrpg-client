@@ -4,35 +4,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/btnPlus"
-        android:layout_width="@dimen/task_btn"
-        android:layout_height="@dimen/task_btn"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:focusable="false"
-        android:text="@string/plus" />
+    <LinearLayout
+        android:id="@+id/llHabitOuter"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/layout_border_sides"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/btnMinus"
-        android:layout_width="@dimen/task_btn"
-        android:layout_height="@dimen/task_btn"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/btnPlus"
-        android:focusable="false"
-        android:text="@string/minus" />
+        <RelativeLayout
+            android:id="@+id/rlHabitInner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/layout_border" >
 
-    <TextView
-        android:id="@+id/tvHabit"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/task_height"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_toRightOf="@+id/btnMinus"
-        android:gravity="center_vertical"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <Button
+                android:id="@+id/btnPlus"
+                android:layout_width="@dimen/task_height"
+                android:layout_height="@dimen/task_height"
+                android:layout_marginRight="1dp"
+                android:background="@drawable/layout_border"
+                android:focusable="false"
+                android:text="@string/plus" />
+
+            <Button
+                android:id="@+id/btnMinus"
+                android:layout_width="@dimen/task_height"
+                android:layout_height="@dimen/task_height"
+                android:layout_marginRight="1dp"
+                android:layout_toRightOf="@+id/btnPlus"
+                android:background="@drawable/layout_border"
+                android:focusable="false"
+                android:text="@string/minus" />
+
+            <TextView
+                android:id="@+id/tvHabit"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/task_height"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/btnMinus"
+                android:gravity="center_vertical"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
