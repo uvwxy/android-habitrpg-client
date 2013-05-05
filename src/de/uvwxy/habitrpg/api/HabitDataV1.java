@@ -445,4 +445,8 @@ public class HabitDataV1 {
 		}
 
 	}
+
+	public boolean rootIsNull() {
+		return root == null;
+	}
 }

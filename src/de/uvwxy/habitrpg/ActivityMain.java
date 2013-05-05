@@ -160,7 +160,7 @@ public class ActivityMain extends Activity {
 	}
 
 	private void updateWidget() {
-		if (habitCon == null) {
+		if (habitCon == null || habitData == null || habitData.rootIsNull()) {
 			return;
 		}
 

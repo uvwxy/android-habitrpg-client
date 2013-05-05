@@ -50,6 +50,10 @@ public class HabitConnectionV1 {
 	}
 
 	public boolean isUp() {
+		if (mUrl == null || userId == null || apiToken == null) {
+			return false;
+		}
+
 		try {
 			return new JSONObject(getJSONResponse("/api/v1/status")).getString("status").equals("up");
 		} catch (JSONException e) {
