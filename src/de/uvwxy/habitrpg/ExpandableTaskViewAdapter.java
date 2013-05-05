@@ -314,6 +314,8 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				cbTodo.setChecked(h.getBoolean("completed"));
 
 				tvTodo.setText(h.getString("text"));
+				habitClick(cbTodo, h.getString("id"), ISCHECKBOX);
+
 				int color = HabitColors.colorFromValue(h.getDouble("value"));
 				int dColor = darkenColor(color);
 				int lColor = lightenColor(color);
