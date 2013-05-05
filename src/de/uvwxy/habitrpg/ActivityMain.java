@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -43,10 +42,10 @@ public class ActivityMain extends Activity {
 	private TextView tvXP = null;
 	private TextView tvHPString = null;
 	private TextView tvXPString = null;
-//	private ImageView ivChar = null;
+	//	private ImageView ivChar = null;
 
 	public static PaintBoxChar pbChar = null;
-	
+
 	private MenuItem mnuRefresh;
 	private MenuItem mnuReportIssue;
 	private MenuItem mnuOpenHRPG;
@@ -87,7 +86,7 @@ public class ActivityMain extends Activity {
 		tvHPString = (TextView) findViewById(R.id.tvHPString);
 		tvXPString = (TextView) findViewById(R.id.tvXPString);
 
-//		ivChar = (ImageView) findViewById(R.id.ivChar);
+		//		ivChar = (ImageView) findViewById(R.id.ivChar);
 		elvTasks = (ExpandableListView) findViewById(R.id.elvTasks);
 
 		rlMain.setBackgroundColor(HabitColors.colorBackground);
@@ -96,7 +95,7 @@ public class ActivityMain extends Activity {
 
 		etva = new ExpandableTaskViewAdapter(ctx, tasksList, habitCon, habitData, habitResultCallback);
 		elvTasks.setAdapter(etva);
-		
+
 		pbChar = (PaintBoxChar) findViewById(R.id.pbChar);
 	}
 
@@ -144,7 +143,7 @@ public class ActivityMain extends Activity {
 		pbChar.setHabitData(habitData);
 		pbChar.setNewMode();
 		pbChar.setTransparentTop();
-		
+
 		tasksList.clear();
 		tasksList.add(habits);
 		tasksList.add(dailies);
@@ -447,13 +446,13 @@ public class ActivityMain extends Activity {
 			@Override
 			public void run() {
 
-//				Bitmap b;
-//				if (habitCon != null) {
-//					b = SpriteFactoryChar.createChar(ctx, habitData);
-//				} else {
-//					b = SpriteFactoryChar.createDefaultMaleChar(ctx);
-//				}
-//				ivChar.setImageBitmap(b);
+				//				Bitmap b;
+				//				if (habitCon != null) {
+				//					b = SpriteFactoryChar.createChar(ctx, habitData);
+				//				} else {
+				//					b = SpriteFactoryChar.createDefaultMaleChar(ctx);
+				//				}
+				//				ivChar.setImageBitmap(b);
 				pbChar.setHabitData(habitData);
 			}
 		};

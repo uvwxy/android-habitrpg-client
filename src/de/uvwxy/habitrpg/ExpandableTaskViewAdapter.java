@@ -2,6 +2,8 @@ package de.uvwxy.habitrpg;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
@@ -280,7 +282,39 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				int lColor = lightenColor(color);
 				tvDaily.setBackgroundColor(HabitColors.colorFromValue(h.getDouble("value")));
 				cbDaily.setBackgroundColor(lColor);
-				if (cbDaily.isChecked()) {
+
+				boolean isATodayDaily = false;
+
+				Calendar calendar = new GregorianCalendar();
+				calendar.setTimeInMillis(System.currentTimeMillis() + habitData.getCronHour());
+
+				JSONObject repeat = h.getJSONObject("repeat");
+
+				switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+				case Calendar.MONDAY:
+					isATodayDaily = repeat.getBoolean("m");
+					break;
+				case Calendar.TUESDAY:
+					isATodayDaily = repeat.getBoolean("t");
+					break;
+				case Calendar.WEDNESDAY:
+					isATodayDaily = repeat.getBoolean("w");
+					break;
+				case Calendar.THURSDAY:
+					isATodayDaily = repeat.getBoolean("th");
+					break;
+				case Calendar.FRIDAY:
+					isATodayDaily = repeat.getBoolean("f");
+					break;
+				case Calendar.SATURDAY:
+					isATodayDaily = repeat.getBoolean("s");
+					break;
+				case Calendar.SUNDAY:
+					isATodayDaily = repeat.getBoolean("su");
+					break;
+				}
+
+				if (cbDaily.isChecked() || !isATodayDaily) {
 					tvDaily.setBackgroundColor(Color.LTGRAY);
 					tvDaily.setTextColor(Color.GRAY);
 					cbDaily.setBackgroundColor(lColor);

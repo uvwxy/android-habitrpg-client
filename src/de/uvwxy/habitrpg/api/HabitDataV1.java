@@ -34,7 +34,7 @@ public class HabitDataV1 {
 
 	public synchronized boolean applyServerResultToData(JSONObject o, String taskID, boolean upOrCompleted) {
 		try {
-			
+
 			root.getJSONObject("stats").put("gp", o.getDouble("gp"));
 			root.getJSONObject("stats").put("hp", o.getDouble("hp"));
 			root.getJSONObject("stats").put("lvl", o.getDouble("lvl"));
@@ -430,5 +430,19 @@ public class HabitDataV1 {
 
 	public boolean rootIsNull() {
 		return root == null;
+	}
+
+	public long getCronHour() {
+		if (root == null) {
+			return 0;
+		}
+
+		try {
+			return root.getJSONObject("preferences").getInt("dayStart");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
 	}
 }
