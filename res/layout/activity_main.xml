@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlTop"
         android:divider="@null"
-        android:groupIndicator="@drawable/group_indicator" >
+        android:groupIndicator="@null" >
     </ExpandableListView>
 
 </RelativeLayout>
