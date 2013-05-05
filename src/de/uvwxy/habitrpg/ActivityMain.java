@@ -460,8 +460,8 @@ public class ActivityMain extends Activity {
 		// TODO: update this in review Section...
 		// updateUi(tvGP, format);
 
-		updateUi(tvHPString, String.format(Locale.US, "%d", (int) hp));
-		updateUi(tvXPString, String.format(Locale.US, "%d", (int) exp));
+		updateUi(tvHPString, String.format(Locale.US, "%d/%d", (int) hp, (int) habitData.getMaxHealth()));
+		updateUi(tvXPString, String.format(Locale.US, "%d/%d", (int) exp, (int) habitData.getToNextLevel()));
 		updateUiCharIcon();
 
 		updateUi(tvHP, habitData.getMaxHealth(), hp);
