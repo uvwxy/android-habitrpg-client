@@ -62,7 +62,7 @@ public class PaintBoxChar extends PaintBox {
 
 		if (numWorkingThreads > 0) {
 
-			counter += (System.currentTimeMillis() - lastCheck) / numWorkingThreads;
+			counter += (System.currentTimeMillis() - lastCheck) * numWorkingThreads;
 			degrees = counter;
 			
 			degrees %= animSpeed;
