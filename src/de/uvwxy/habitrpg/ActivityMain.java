@@ -75,7 +75,7 @@ public class ActivityMain extends Activity {
 		rlMain = (RelativeLayout) findViewById(R.id.rlMain);
 
 		tvName = (TextView) findViewById(R.id.tvName);
-		tvGP = (TextView) findViewById(R.id.tvGP);
+		// tvGP = (TextView) findViewById(R.id.tvGP);
 		tvHP = (TextView) findViewById(R.id.tvHP);
 		tvXP = (TextView) findViewById(R.id.tvXP);
 		tvHPString = (TextView) findViewById(R.id.tvHPString);
@@ -438,7 +438,8 @@ public class ActivityMain extends Activity {
 		updateUi(tvName, getText(R.string.name) + habitCon.getUserName() + " [lvl: " + ((int) lvl) + "]");
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
 
-		updateUi(tvGP, format);
+		// TODO: update this in review Section...
+		// updateUi(tvGP, format);
 
 		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
 		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));

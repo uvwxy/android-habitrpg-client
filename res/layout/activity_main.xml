@@ -11,17 +11,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/layout_border" >
 
-        <TextView
-            android:id="@+id/tvGP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvName"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvName"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:text="@string/_gold"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
         <ImageView
             android:id="@+id/ivChar"
             android:layout_width="@dimen/icon_width"
@@ -38,47 +27,57 @@
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/ivChar"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:layout_toRightOf="@+id/ivChar"
+            android:layout_alignLeft="@+id/ivChar"
+            android:layout_alignRight="@+id/ivChar"
+            android:layout_below="@+id/ivChar"
+            android:gravity="center_horizontal"
             android:text="@string/name" />
 
-        <TextView
-            android:id="@+id/tvHP"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvGP"
-            android:layout_below="@+id/tvGP"
-            android:text="" />
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/ivChar"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/ivChar" >
 
-        <TextView
-            android:id="@+id/tvXP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvHP"
-            android:layout_below="@+id/tvHP"
-            android:text="" />
+            <TextView
+                android:id="@+id/tvHP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" />
 
-        <TextView
-            android:id="@+id/tvHPString"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/tvGP"
-            android:layout_alignTop="@+id/tvHP"
-            android:layout_toRightOf="@+id/ivChar"
-            android:gravity="center_horizontal"
-            android:text="@string/__" />
+            <TextView
+                android:id="@+id/tvXP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/tvHP" />
 
-        <TextView
-            android:id="@+id/tvXPString"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvHP"
-            android:layout_alignRight="@+id/tvHPString"
-            android:layout_below="@+id/tvHPString"
-            android:gravity="center_horizontal"
-            android:text="@string/__" />
+            <TextView
+                android:id="@+id/tvXPString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvHPString"
+                android:background="@drawable/layout_box_reward"
+                android:gravity="center_horizontal"
+                android:text="@string/__" />
+
+            <TextView
+                android:id="@+id/tvHPString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/layout_box_reward"
+                android:gravity="center_horizontal"
+                android:text="@string/__" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
