@@ -114,7 +114,7 @@ public class ActivityMain extends Activity {
 				habitData.applyServerResultToData(o, taskID);
 				refreshExpandableTasks(habitData);
 				updateTasksList();
-				
+
 				updateStats(o.getDouble("exp"), o.getDouble("gp"), o.getDouble("hp"), o.getDouble("lvl"), o.getDouble("delta"));
 			} catch (JSONException e) {
 				e.printStackTrace();
