@@ -157,7 +157,7 @@ public class ActivityMain extends Activity {
 		RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_habit_icon);
 		ComponentName thisWidget = new ComponentName(getApplicationContext(), WidgetHabitIcon.class);
 
-		Bitmap bitmap = SpriteFactoryChar.createChar(getApplicationContext(), habitCon, habitCon.isMale());
+		Bitmap bitmap = SpriteFactoryChar.createChar(getApplicationContext(), habitCon);
 		remoteViews.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bitmap, habitCon));
 		AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(thisWidget, remoteViews);
 	}
@@ -424,7 +424,7 @@ public class ActivityMain extends Activity {
 
 				Bitmap b;
 				if (habitCon != null) {
-					b = SpriteFactoryChar.createChar(ctx, habitCon, habitCon.isMale());
+					b = SpriteFactoryChar.createChar(ctx, habitCon);
 				} else {
 					b = SpriteFactoryChar.createDefaultMaleChar(ctx);
 				}

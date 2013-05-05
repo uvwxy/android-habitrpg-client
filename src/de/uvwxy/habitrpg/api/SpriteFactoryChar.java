@@ -68,7 +68,7 @@ public class SpriteFactoryChar {
 		return bm;
 	}
 
-	public static Bitmap createChar(Context ctx, HabitConnectionV1 habitcon, boolean male) {
+	public static Bitmap createChar(Context ctx, HabitConnectionV1 habitcon) {
 		checkAndLoad(ctx);
 
 		int w = maleSprites.getHeight();
@@ -76,6 +76,7 @@ public class SpriteFactoryChar {
 		Bitmap bm = Bitmap.createBitmap(w, w, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bm);
 
+		boolean male = habitcon.isMale();
 		ISpriteConverter isc = male ? scm : scf;
 		Bitmap sprites = male ? maleSprites : femaleSprites;
 

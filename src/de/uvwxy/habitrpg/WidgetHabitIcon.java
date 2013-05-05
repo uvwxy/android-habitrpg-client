@@ -38,7 +38,7 @@ public class WidgetHabitIcon extends AppWidgetProvider {
 			if (views != null && habitCon.loadLocalData(context)) {
 				Log.i("HABITWIDGET", "ID:" + appWidgetId);
 
-				Bitmap bmp = SpriteFactoryChar.createChar(context, habitCon, habitCon.isMale());
+				Bitmap bmp = SpriteFactoryChar.createChar(context, habitCon);
 				views.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bmp, habitCon));
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 				
