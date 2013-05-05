@@ -387,7 +387,6 @@ public class ActivityMain extends Activity {
 		Runnable uiThread = new Runnable() {
 			@Override
 			public void run() {
-				Log.e("HABIT", "tvHPString.getWidth() = " + tvHPString.getWidth());
 				tvBar.setWidth((int) (tvHPString.getWidth() * (value / max)));
 			}
 		};
