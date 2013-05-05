@@ -13,11 +13,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
@@ -29,8 +26,8 @@ import android.widget.Toast;
 import de.uvwxy.habitrpg.ExpandableTask.TaskType;
 import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
-import de.uvwxy.habitrpg.api.HabitDataV1;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
+import de.uvwxy.habitrpg.api.HabitDataV1;
 import de.uvwxy.habitrpg.api.SpriteFactoryChar;
 
 public class ActivityMain extends Activity {
