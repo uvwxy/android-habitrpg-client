@@ -32,7 +32,7 @@ public class HabitDataV1 {
 	//	JSONArray data_todos;
 	//	JSONArray data_todos_done;
 
-	public boolean applyServerResultToData(JSONObject o, String taskID, boolean upOrCompleted) {
+	public synchronized boolean applyServerResultToData(JSONObject o, String taskID, boolean upOrCompleted) {
 		try {
 			
 			root.getJSONObject("stats").put("gp", o.getDouble("gp"));
