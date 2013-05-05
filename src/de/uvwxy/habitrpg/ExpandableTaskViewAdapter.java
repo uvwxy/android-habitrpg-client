@@ -187,7 +187,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 			try {
 				JSONObject h = list.getJSONObject(childPosition);
-				
+
 				int color = HabitColors.colorFromValue(h.getDouble("value"));
 				int dColor = darkenColor(color);
 				int lColor = lightenColor(color);
@@ -209,7 +209,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				tvHabit.setText(h.getString("text"));
 				tvHabit.setBackgroundColor(color);
 				rlHabitInner.setBackgroundColor(dColor);
-				
+
 				if (isLastChild) {
 					// TODO: add switch between apis
 					llHabitOuter.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_boder_no_top));
@@ -345,21 +345,26 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 		final Button btnRewardBuy = (Button) convertView.findViewById(R.id.btnRewardBuy);
 		final ImageView ivRewardIcon = (ImageView) convertView.findViewById(R.id.ivRewardIcon);
 		final TextView tvRewardDescription = (TextView) convertView.findViewById(R.id.tvRewardDescription);
-		final TextView tvRewardPrice = (TextView) convertView.findViewById(R.id.tvRewardPrice);
+		final RelativeLayout rlRewardInner = (RelativeLayout) convertView.findViewById(R.id.rlRewardInner);
+		final LinearLayout llRewardOuter = (LinearLayout) convertView.findViewById(R.id.llRewardOuter);
 
 		ExpandableTask e = listOfAllTasks.get(groupPosition);
 
-		if (e != null && tvRewardPrice != null) {
+		if (e != null) {
 			JSONArray list = e.getList();
 
 			try {
 				JSONObject h = list.getJSONObject(childPosition);
 
-				tvRewardPrice.setText("" + h.getInt("value") + "G");
+				btnRewardBuy.setText("" + h.getInt("value"));
 				// TODO: COIN: btnRewardBuy.setBackgroundResource(R.drawable.)
 
 				tvRewardDescription.setText(h.getString("text"));
 				habitClick(btnRewardBuy, h.getString("id"), BUY);
+				if (isLastChild) {
+					// TODO: add switch between apis
+					llRewardOuter.setBackgroundDrawable(ctx.getResources().getDrawable(R.drawable.layout_boder_no_top));
+				}
 
 			} catch (JSONException e1) {
 				tvRewardDescription.setText("[Error]}\n" + e1.getMessage());
@@ -398,12 +403,11 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		convertView = inf.inflate(R.layout.expandable_group, parent, false);
-		
-		if(listOfAllTasks.get(groupPosition).getTitle().equals("dummy")){
+
+		if (listOfAllTasks.get(groupPosition).getTitle().equals("dummy")) {
 			convertView = inf.inflate(R.layout.expandable_dummy, parent, false);
 			return convertView;
 		}
-		
 
 		LinearLayout llGroup = (LinearLayout) convertView.findViewById(R.id.llGroup);
 		ImageView ivExpanderArrow = (ImageView) convertView.findViewById(R.id.ivExpanderArrow);
