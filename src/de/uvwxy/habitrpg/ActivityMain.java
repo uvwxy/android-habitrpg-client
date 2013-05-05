@@ -54,6 +54,11 @@ public class ActivityMain extends Activity {
 	private MenuItem mnuConfig;
 	private MenuItem mnuAbout;
 
+	private ExpandableTask habits = new ExpandableTask("idHabits");
+	private ExpandableTask dailies = new ExpandableTask("idDailies");
+	private ExpandableTask todos = new ExpandableTask("idTodos");
+	private ExpandableTask rewards = new ExpandableTask("idRewards");
+
 	private ExpandableListView elvTasks = null;
 	private ExpandableTaskViewAdapter etva = null;
 
@@ -107,6 +112,9 @@ public class ActivityMain extends Activity {
 
 				// TODO: display diff
 				habitData.applyServerResultToData(o, taskID);
+				refreshExpandableTasks(habitData);
+				updateTasksList();
+				
 				updateStats(o.getDouble("exp"), o.getDouble("gp"), o.getDouble("hp"), o.getDouble("lvl"), o.getDouble("delta"));
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -116,11 +124,6 @@ public class ActivityMain extends Activity {
 	};
 
 	private void initGuiFromHabit(final HabitConnectionV1 habitCon) {
-
-		ExpandableTask habits = new ExpandableTask("idHabits");
-		ExpandableTask dailies = new ExpandableTask("idDailies");
-		ExpandableTask todos = new ExpandableTask("idTodos");
-		ExpandableTask rewards = new ExpandableTask("idRewards");
 
 		habits.setTitle("Habits");
 		dailies.setTitle("Dailies");
@@ -132,25 +135,31 @@ public class ActivityMain extends Activity {
 		todos.setType(TaskType.TODO);
 		rewards.setType(TaskType.REWARD);
 
-		habits.setList(habitData.getHabits(), TaskType.HABIT);
-		dailies.setList(habitData.getDailies(), TaskType.DAILY);
-		todos.setList(habitData.getTodos(), TaskType.TODO);
-		rewards.setList(habitData.getRewards(), TaskType.REWARD);
+		updateStats(habitData.getXP(), habitData.getGP(), habitData.getHP(), habitData.getLevel(), 0);
+
+		refreshExpandableTasks(habitData);
 
 		tasksList.clear();
 		tasksList.add(habits);
 		tasksList.add(dailies);
 		tasksList.add(todos);
 		tasksList.add(rewards);
+
 		ExpandableTask dummy = new ExpandableTask("idDummy");
 		dummy.setTitle("dummy");
 		tasksList.add(dummy);
 
-		updateStats(habitData.getXP(), habitData.getGP(), habitData.getHP(), habitData.getLevel(), 0);
-
 		updateTasksList();
 
 		updateWidget();
+	}
+
+	private void refreshExpandableTasks(HabitDataV1 habitData) {
+		habits.setList(habitData.getHabits(), TaskType.HABIT);
+		dailies.setList(habitData.getDailies(), TaskType.DAILY);
+		todos.setList(habitData.getTodos(), TaskType.TODO);
+		rewards.setList(habitData.getRewards(), TaskType.REWARD);
+
 	}
 
 	private void updateWidget() {
