@@ -33,7 +33,9 @@
             android:gravity="center_horizontal"
             android:text="@string/name" />
 
+
         <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -41,44 +43,78 @@
             android:layout_marginLeft="14dp"
             android:layout_toRightOf="@+id/ivChar" >
 
-            <TextView
-                android:id="@+id/tvHP"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rlHPBox"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentLeft="true" >
 
-            <TextView
-                android:id="@+id/tvXP"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/ivHPHeart"
+                    android:layout_width="@dimen/hpxp_bar_height"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:src="@drawable/glyphicons_012_heart" />
+
+                <TextView
+                    android:id="@+id/tvHPBG"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:layout_toRightOf="@+id/ivHPHeart"
+                    android:background="@drawable/layout_box_reward" />
+
+                <TextView
+                    android:id="@+id/tvHP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:layout_toRightOf="@+id/ivHPHeart" />
+
+                <TextView
+                    android:id="@+id/tvHPString"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@+id/ivHPHeart"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/__" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlXPBox"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/tvHP" />
+                android:layout_below="@+id/rlHPBox"
+                android:layout_alignParentLeft="true" >
 
-            <TextView
-                android:id="@+id/tvXPString"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/tvHPString"
-                android:background="@drawable/layout_box_reward"
-                android:gravity="center_horizontal"
-                android:text="@string/__" />
+                <ImageView
+                    android:id="@+id/ivXPStar"
+                    android:layout_width="@dimen/hpxp_bar_height"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:src="@drawable/glyphicons_049_star" />
 
-            <TextView
-                android:id="@+id/tvHPString"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/layout_box_reward"
-                android:gravity="center_horizontal"
-                android:text="@string/__" />
+                <TextView
+                    android:id="@+id/tvXPBG"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:layout_toRightOf="@+id/ivXPStar"
+                    android:background="@drawable/layout_box_reward" />
 
+                <TextView
+                    android:id="@+id/tvXP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:layout_toRightOf="@+id/ivXPStar" />
+
+                <TextView
+                    android:id="@+id/tvXPString"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/hpxp_bar_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@+id/ivXPStar"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/__" />
+
+            </RelativeLayout>
         </RelativeLayout>
-
     </RelativeLayout>
 
     <ExpandableListView
