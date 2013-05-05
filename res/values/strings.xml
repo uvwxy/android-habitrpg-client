@@ -47,7 +47,7 @@
     <string name="__">[0/0]</string>
     <string name="report_issue">Report Issue</string>
     <string name="open_habitrpg_com">Open HabitRPG.com</string>
-    <string name="title_activity_activity_apisetup">ActivityAPISetup</string>
+    <string name="title_activity_activity_apisetup">API Setup</string>
     <string name="qr_code">QR Code</string>
     <string name="refresh_icon">Refresh Widget Icon</string>
     <string name="title_activity_about">About</string>
