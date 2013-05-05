@@ -53,9 +53,9 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 				@Override
 				public void onClick(View v) {
-					final ProgressDialog waitingDialog = ProgressDialog.show(ctx, "Communicating", "Please wait...", true);
-					waitingDialog.setProgress(10);
-					waitingDialog.show();
+					//final ProgressDialog waitingDialog = ProgressDialog.show(ctx, "Communicating", "Please wait...", true);
+					//waitingDialog.setProgress(10);
+					//waitingDialog.show();
 
 					Thread t = new Thread(new Runnable() {
 
@@ -65,7 +65,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 								String result = habitCon.updateTask(taskId, upOrCompleted);
 								serverResultCallback.serverReply(result, taskId, upOrCompleted);
-								waitingDialog.dismiss();
+								//waitingDialog.dismiss();
 							} catch (ClientProtocolException e) {
 								e.printStackTrace();
 							} catch (IOException e) {
@@ -80,11 +80,17 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 		if (v instanceof CheckBox) {
 			CheckBox cb = (CheckBox) v;
-			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			cb.setOnClickListener(new OnClickListener() {
 
 				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+				public void onClick(View v) {
+					CheckBox cb;
+					if (v instanceof CheckBox){
+						cb = (CheckBox) v;
+					}
+					
+					boolean isChecked = ((CheckBox) v).isChecked();
+					
 					boolean direction = false;
 					if (isChecked) {
 						direction = COMPLETED;
@@ -109,6 +115,8 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 					});
 					t.start();
 				}
+
+				
 			});
 		}
 
