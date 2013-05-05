@@ -20,7 +20,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/layout_border_light_inside" >
+            android:background="@drawable/layout_box_reward" >
 
             <Button
                 android:id="@+id/btnRewardBuy"
@@ -28,9 +28,10 @@
                 android:layout_height="@dimen/task_height"
                 android:layout_marginRight="1dp"
                 android:background="@color/buy"
-                android:drawableRight="@drawable/button_plus"
+                android:drawableRight="@drawable/coin_gold"
                 android:focusable="false"
                 android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                 android:text="20" />
 
             <ImageView
@@ -40,7 +41,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/btnRewardBuy"
                 android:background="@color/ltsnow"
-                android:src="@drawable/chest" />
+                android:src="@drawable/chest_transparent" />
 
             <TextView
                 android:id="@+id/tvRewardDescription"
@@ -53,7 +54,6 @@
                 android:paddingRight="4dp"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
         </RelativeLayout>
     </LinearLayout>
 
