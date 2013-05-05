@@ -13,6 +13,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
+import de.uvwxy.habitrpg.api.HabitDataV1;
 import de.uvwxy.habitrpg.api.SpriteFactoryChar;
 
 public class WidgetHabitIcon extends AppWidgetProvider {
@@ -33,7 +34,7 @@ public class WidgetHabitIcon extends AppWidgetProvider {
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_habit_icon);
 			views.setOnClickPendingIntent(R.id.ivWidgetIcon, pendingIntent);
 
-			HabitConnectionV1 habitCon = new HabitConnectionV1();
+			HabitDataV1 habitCon = new HabitDataV1();
 
 			if (views != null && habitCon.loadLocalData(context)) {
 				Log.i("HABITWIDGET", "ID:" + appWidgetId);
@@ -41,7 +42,7 @@ public class WidgetHabitIcon extends AppWidgetProvider {
 				Bitmap bmp = SpriteFactoryChar.createChar(context, habitCon);
 				views.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bmp, habitCon));
 				appWidgetManager.updateAppWidget(appWidgetId, views);
-				
+
 				Toast.makeText(context, "Icon refreshed", Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(context, "There was a problem loading local data", Toast.LENGTH_SHORT).show();

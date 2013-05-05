@@ -68,7 +68,7 @@ public class SpriteFactoryChar {
 		return bm;
 	}
 
-	public static Bitmap createChar(Context ctx, HabitConnectionV1 habitcon) {
+	public static Bitmap createChar(Context ctx, HabitDataV1 habitcon) {
 		checkAndLoad(ctx);
 
 		int w = maleSprites.getHeight();
@@ -81,7 +81,7 @@ public class SpriteFactoryChar {
 		return bm;
 	}
 
-	public static void renderChar(HabitConnectionV1 habitcon, int w, Canvas canvas) {
+	public static void renderChar(HabitDataV1 habitcon, int w, Canvas canvas) {
 		boolean male = habitcon.isMale();
 		ISpriteConverter isc = male ? scm : scf;
 		Bitmap sprites = male ? maleSprites : femaleSprites;
@@ -97,8 +97,8 @@ public class SpriteFactoryChar {
 		int lvl = 0;
 		try {
 			lvl = (int) habitcon.getLevel();
-		} catch (Exception e){
-			
+		} catch (Exception e) {
+
 		}
 		canvas.drawText("lvl: " + lvl, 0, canvas.getHeight(), paint);
 	}
@@ -151,7 +151,7 @@ public class SpriteFactoryChar {
 		c.drawBitmap(bSrc, src, dst, paint);
 	}
 
-	public static Bitmap addColorHPXPBars(Bitmap bmp, HabitConnectionV1 habitCon) {
+	public static Bitmap addColorHPXPBars(Bitmap bmp, HabitDataV1 habitCon) {
 		if (bmp == null) {
 			throw new RuntimeException("bmp can not be null");
 		}

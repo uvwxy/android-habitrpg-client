@@ -29,6 +29,7 @@ import android.widget.Toast;
 import de.uvwxy.habitrpg.ExpandableTask.TaskType;
 import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
+import de.uvwxy.habitrpg.api.HabitDataV1;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
 import de.uvwxy.habitrpg.api.SpriteFactoryChar;
 
@@ -60,6 +61,7 @@ public class ActivityMain extends Activity {
 
 	private HabitSettings habitSet = null;
 	private HabitConnectionV1 habitCon = null;
+	private HabitDataV1 habitData = null;
 	private Runnable backgroundWorker = new Runnable() {
 
 		@Override
@@ -88,18 +90,18 @@ public class ActivityMain extends Activity {
 		tvHP.setBackgroundColor(HabitColors.colorHP);
 		tvXP.setBackgroundColor(HabitColors.colorXP);
 
-		etva = new ExpandableTaskViewAdapter(ctx, tasksList, habitCon, habitResultCallback);
+		etva = new ExpandableTaskViewAdapter(ctx, tasksList, habitCon, habitData, habitResultCallback);
 		elvTasks.setAdapter(etva);
 	}
 
 	public ServerResultCallback habitResultCallback = new ServerResultCallback() {
 
 		@Override
-		public void serverReply(String s) {
+		public void serverReply(String s, String taskID) {
 			try {
 				JSONObject o = new JSONObject(s);
-				double oldExp = habitCon.getExp();
-				double oldGp = habitCon.getGP();
+				double oldExp = habitData.getExp();
+				double oldGp = habitData.getGP();
 				// TODO: update exp/gp/hp/lvl in habitCon/JSON
 
 				updateStats(o.getDouble("exp"), o.getDouble("gp"), o.getDouble("hp"), o.getDouble("lvl"), o.getDouble("delta"));
@@ -128,10 +130,10 @@ public class ActivityMain extends Activity {
 		todos.setType(TaskType.TODO);
 		rewards.setType(TaskType.REWARD);
 
-		habits.setList(habitCon.getHabits(), TaskType.HABIT);
-		dailies.setList(habitCon.getDailies(), TaskType.DAILY);
-		todos.setList(habitCon.getTodos(), TaskType.TODO);
-		rewards.setList(habitCon.getRewards(), TaskType.REWARD);
+		habits.setList(habitData.getHabits(), TaskType.HABIT);
+		dailies.setList(habitData.getDailies(), TaskType.DAILY);
+		todos.setList(habitData.getTodos(), TaskType.TODO);
+		rewards.setList(habitData.getRewards(), TaskType.REWARD);
 
 		tasksList.clear();
 		tasksList.add(habits);
@@ -142,7 +144,7 @@ public class ActivityMain extends Activity {
 		dummy.setTitle("dummy");
 		tasksList.add(dummy);
 
-		updateStats(habitCon.getExp(), habitCon.getGP(), habitCon.getHp(), habitCon.getLevel(), 0);
+		updateStats(habitData.getExp(), habitData.getGP(), habitData.getHp(), habitData.getLevel(), 0);
 
 		updateTasksList();
 
@@ -157,8 +159,8 @@ public class ActivityMain extends Activity {
 		RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_habit_icon);
 		ComponentName thisWidget = new ComponentName(getApplicationContext(), WidgetHabitIcon.class);
 
-		Bitmap bitmap = SpriteFactoryChar.createChar(getApplicationContext(), habitCon);
-		remoteViews.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bitmap, habitCon));
+		Bitmap bitmap = SpriteFactoryChar.createChar(getApplicationContext(), habitData);
+		remoteViews.setImageViewBitmap(R.id.ivWidgetIcon, SpriteFactoryChar.addColorHPXPBars(bitmap, habitData));
 		AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(thisWidget, remoteViews);
 	}
 
@@ -166,13 +168,13 @@ public class ActivityMain extends Activity {
 		// do this on a thread
 		if (habitCon.isUp()) {
 			showWD();
-			if (habitCon.loadRemoteData()) {
+			if (habitCon.loadRemoteData(habitData)) {
 				wd.setProgress(1);
 
 				initGuiFromHabit(habitCon);
 				wd.setProgress(2);
 
-				habitCon.storeLocalData(ctx);
+				habitData.storeLocalData(ctx);
 			} else {
 
 				updateUi(tvHPString, "Could not load user data, setup correct?");
@@ -187,23 +189,6 @@ public class ActivityMain extends Activity {
 
 	}
 
-	private void startBackgroundPullDataThread() {
-		habitCon.setConfig(habitSet.getURL(), habitSet.getUserToken(), habitSet.getApiToken());
-		killBackgroundThread();
-		startBackgroundThread();
-	}
-
-	private void startBackgroundThread() {
-		backGroundThread = new Thread(backgroundWorker);
-		backGroundThread.start();
-	}
-
-	private void killBackgroundThread() {
-		if (backGroundThread != null && backGroundThread.isAlive()) {
-			backGroundThread.interrupt();
-		}
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -211,6 +196,7 @@ public class ActivityMain extends Activity {
 
 		habitSet = new HabitSettings(this);
 		habitCon = new HabitConnectionV1();
+		habitData = new HabitDataV1();
 
 		if (habitSet.isSet()) {
 			habitCon.setConfig(habitSet.getURL(), habitSet.getUserToken(), habitSet.getApiToken());
@@ -245,7 +231,7 @@ public class ActivityMain extends Activity {
 	@Override
 	protected void onResume() {
 		if (habitSet.isSet()) {
-			if (habitCon.loadLocalData(ctx)) {
+			if (habitData.loadLocalData(ctx)) {
 				initGuiFromHabit(habitCon);
 				tvHP.post(new Runnable() {
 
@@ -254,8 +240,8 @@ public class ActivityMain extends Activity {
 						if (habitCon == null) {
 							return;
 						}
-						updateUi(tvHP, habitCon.getMaxHealth(), habitCon.getHp());
-						updateUi(tvXP, habitCon.getToNextLevel(), habitCon.getExp());
+						updateUi(tvHP, habitData.getMaxHealth(), habitData.getHp());
+						updateUi(tvXP, habitData.getToNextLevel(), habitData.getExp());
 					}
 				});
 
@@ -313,6 +299,23 @@ public class ActivityMain extends Activity {
 		mnuConfig = menu.findItem(R.id.itemSettings);
 		mnuAbout = menu.findItem(R.id.itemAbout);
 		return super.onPrepareOptionsMenu(menu);
+	}
+
+	private void startBackgroundPullDataThread() {
+		habitCon.setConfig(habitSet.getURL(), habitSet.getUserToken(), habitSet.getApiToken());
+		killBackgroundThread();
+		startBackgroundThread();
+	}
+
+	private void startBackgroundThread() {
+		backGroundThread = new Thread(backgroundWorker);
+		backGroundThread.start();
+	}
+
+	private void killBackgroundThread() {
+		if (backGroundThread != null && backGroundThread.isAlive()) {
+			backGroundThread.interrupt();
+		}
 	}
 
 	@Override
@@ -425,7 +428,7 @@ public class ActivityMain extends Activity {
 
 				Bitmap b;
 				if (habitCon != null) {
-					b = SpriteFactoryChar.createChar(ctx, habitCon);
+					b = SpriteFactoryChar.createChar(ctx, habitData);
 				} else {
 					b = SpriteFactoryChar.createDefaultMaleChar(ctx);
 				}
@@ -436,7 +439,7 @@ public class ActivityMain extends Activity {
 	}
 
 	private void updateStats(double exp, double gp, double hp, double lvl, double delta) {
-		updateUi(tvName, habitCon.getUserName());
+		updateUi(tvName, habitData.getUserName());
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
 
 		// TODO: update this in review Section...
@@ -446,8 +449,8 @@ public class ActivityMain extends Activity {
 		updateUi(tvXPString, String.format(Locale.US, "%d", (int) exp));
 		updateUiCharIcon();
 
-		updateUi(tvHP, habitCon.getMaxHealth(), hp);
-		updateUi(tvXP, habitCon.getToNextLevel(), exp);
+		updateUi(tvHP, habitData.getMaxHealth(), hp);
+		updateUi(tvXP, habitData.getToNextLevel(), exp);
 	}
 
 	private void openUrl(String url) {
