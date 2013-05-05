@@ -8,6 +8,16 @@ public class ExpandableTask {
 	private JSONArray listTasks = null;
 	private TaskType type = TaskType.HABIT;
 
+	private String id;
+
+	public ExpandableTask(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
 	public void setList(JSONArray list, TaskType type) {
 		this.listTasks = list;
 		this.type = type;
