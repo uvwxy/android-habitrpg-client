@@ -286,7 +286,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				boolean isATodayDaily = false;
 
 				Calendar calendar = new GregorianCalendar();
-				calendar.setTimeInMillis(System.currentTimeMillis() + habitData.getCronHour());
+				calendar.setTimeInMillis(System.currentTimeMillis() - habitData.getCronHour()*1000*60*60);
 
 				JSONObject repeat = h.getJSONObject("repeat");
 
