@@ -324,7 +324,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				if (cbTodo.isChecked()) {
 					tvTodo.setBackgroundColor(Color.LTGRAY);
 					tvTodo.setTextColor(Color.GRAY);
-					cbTodo.setBackgroundColor(Color.GRAY);
+					cbTodo.setBackgroundColor(lColor);
 				}
 				llTodo.setBackgroundColor(dColor);
 				if (isLastChild) {
