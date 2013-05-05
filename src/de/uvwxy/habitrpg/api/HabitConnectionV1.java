@@ -1,9 +1,6 @@
 package de.uvwxy.habitrpg.api;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,31 +26,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.util.Log;
 
 public class HabitConnectionV1 {
-	private static final String HABIT_SAV = "habit.sav";
-	
+
 	private String mUrl;
 
 	private String userId;
 	private String apiToken;
-	private JSONObject data_main;
-	private JSONObject data_auth;
-	private JSONObject data_preferences;
-	private JSONArray data_habits;
-	private JSONArray data_dailies;
-	private JSONArray data_todos;
-	private JSONArray data_todos_done;
-	private JSONArray data_rewards;
 
-	private double exp = Double.MIN_VALUE;
-	private double gp = Double.MIN_VALUE;
-	private double hp = Double.MIN_VALUE;
-	private double lvl = Double.MIN_VALUE;
-	
-	
+	public interface ServerResultCallback {
+		public void serverReply(String s, String taskId, boolean upOrCompleted);
+	}
 
 	public HabitConnectionV1() {
 		super();
@@ -66,6 +50,10 @@ public class HabitConnectionV1 {
 	}
 
 	public boolean isUp() {
+		if (mUrl == null || userId == null || apiToken == null) {
+			return false;
+		}
+
 		try {
 			return new JSONObject(getJSONResponse("/api/v1/status")).getString("status").equals("up");
 		} catch (JSONException e) {
@@ -80,54 +68,12 @@ public class HabitConnectionV1 {
 		}
 	}
 
-	public boolean storeLocalData(Context ctx) {
-		if (data_main == null) {
-			return false;
-		}
-
-		String dataJSON = data_main.toString();
-		try {
-			FileOutputStream fout = ctx.openFileOutput(HABIT_SAV, Context.MODE_PRIVATE);
-			fout.write(dataJSON.getBytes());
-		} catch (FileNotFoundException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		return false;
-	}
-
-	public boolean loadLocalData(Context ctx) {
-		JSONObject data = null;
-		try {
-			FileInputStream fin = ctx.openFileInput(HABIT_SAV);
-			String dataJSON = getStringFromInputStream(fin);
-			if (dataJSON == null) {
-				Log.e("HABIT", "Error: dataJSON was null");
-				return false;
-			}
-			data = new JSONObject(dataJSON);
-			data_main = data;
-			return setupData(data);
-		} catch (FileNotFoundException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
-			e.printStackTrace();
-		} catch (JSONException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public boolean loadRemoteData() {
+	public boolean loadRemoteData(HabitDataV1 habitData) {
 		JSONObject data;
 		try {
 			data = new JSONObject(getJSONResponse("/api/v1/user"));
-			data_main = data;
-			return setupData(data);
+			habitData.root = data;
+			return habitData.setupData(data);
 		} catch (ClientProtocolException e) {
 			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
@@ -141,272 +87,20 @@ public class HabitConnectionV1 {
 		return false;
 	}
 
-	public boolean setupData(JSONObject data) {
-
-		try {
-			data_auth = data.getJSONObject("auth");
-			data_preferences = data.getJSONObject("preferences");
-
-			JSONObject tasks = data.getJSONObject("tasks");
-
-			data_habits = new JSONArray();
-			data_dailies = new JSONArray();
-			data_todos = new JSONArray();
-			data_todos_done = new JSONArray();
-			data_rewards = new JSONArray();
-
-			JSONArray ja = data.getJSONArray("habitIds");
-			for (int i = 0; i < ja.length(); i++) {
-				data_habits.put(tasks.getJSONObject(ja.getString(i)));
-			}
-
-			ja = data.getJSONArray("dailyIds");
-			for (int i = 0; i < ja.length(); i++) {
-				data_dailies.put(tasks.getJSONObject(ja.getString(i)));
-			}
-			ja = data.getJSONArray("todoIds");
-			for (int i = 0; i < ja.length(); i++) {
-				JSONObject o = tasks.getJSONObject(ja.getString(i));
-				if (!o.getBoolean("completed")) {
-					data_todos.put(o);
-				} else {
-					data_todos_done.put(o);
-				}
-			}
-			ja = data.getJSONArray("rewardIds");
-			for (int i = 0; i < ja.length(); i++) {
-				data_rewards.put(tasks.getJSONObject(ja.getString(i)));
-			}
-
-			return true;
-		} catch (JSONException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
-			e.printStackTrace();
-		}
-		return false;
+	public void fetchHabits(HabitDataV1 target) {
+		target.clobberTasks(fetchTasks("habit"));
 	}
 
-	public String getUserName() {
-		try {
-			return data_auth.getJSONObject("local").getString("username");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public void fetchDailies(HabitDataV1 target) {
+		target.clobberTasks(fetchTasks("daily"));
 	}
 
-	public String getUserMail() {
-		try {
-			return data_auth.getJSONObject("local").getString("email");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public void fetchTodos(HabitDataV1 target) {
+		target.clobberTasks(fetchTasks("todo"));
 	}
 
-	public double getExp() {
-		try {
-			return data_main.getJSONObject("stats").getDouble("exp");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public double getHp() {
-		try {
-			return data_main.getJSONObject("stats").getDouble("hp");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public double getLevel() {
-		try {
-			return data_main.getJSONObject("stats").getDouble("lvl");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public double getToNextLevel() {
-		try {
-			return data_main.getJSONObject("stats").getDouble("toNextLevel");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public double getMaxHealth() {
-		try {
-			return data_main.getJSONObject("stats").getDouble("maxHealth");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public double getGP() {
-		try {
-			return data_main.getJSONObject("stats").getDouble("gp");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public boolean isPartyLeader() {
-		try {
-			return data_main.getJSONObject("party").getBoolean("leader");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public String getPartyID() {
-		try {
-			return data_main.getJSONObject("party").getString("current");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public boolean hasPartyInvitation() {
-		return getPartyInvitation() != null;
-	}
-
-	public String getPartyInvitation() {
-		try {
-			return data_main.getJSONObject("party").getString("invitation");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public int getWeapon() {
-		try {
-			if (data_main != null) {
-				return data_main.getJSONObject("items").getInt("weapon");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return 0;
-
-	}
-
-	public int getArmor() {
-		try {
-			if (data_main != null) {
-				return data_main.getJSONObject("items").getInt("armor");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-
-		}
-		return 0;
-	}
-
-	public int getShield() {
-		try {
-			if (data_main != null) {
-				return data_main.getJSONObject("items").getInt("shield");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return 0;
-
-	}
-
-	public int getHead() {
-		try {
-			if (data_main != null) {
-				return data_main.getJSONObject("items").getInt("head");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return 0;
-
-	}
-
-	public JSONArray getHabitIds() {
-		try {
-			return data_main.getJSONArray("habitIds");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public JSONArray getDailyIds() {
-		try {
-			return data_main.getJSONArray("dailyIds");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public JSONArray getTodoIds() {
-		try {
-			return data_main.getJSONArray("todoIds");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static String getTextFromTask(JSONObject o) {
-		try {
-			return o.getString("text");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public JSONArray getHabits() {
-		return data_habits;
-	}
-
-	public JSONArray getDailies() {
-		return data_dailies;
-	}
-
-	public JSONArray getTodos() {
-		return data_todos;
-	}
-
-	public JSONArray getRewards() {
-		return data_rewards;
-	}
-
-	public JSONArray fetchHabits() {
-		data_habits = fetchTasks("habit");
-		return data_habits;
-	}
-
-	public JSONArray fetchDailies() {
-		data_dailies = fetchTasks("daily");
-		return data_dailies;
-	}
-
-	public JSONArray fetchTodos() {
-		data_todos = fetchTasks("todo");
-		return data_todos;
-	}
-
-	public JSONArray fetchRewards() {
-		data_rewards = fetchTasks("reward");
-		return data_rewards;
+	public void fetchRewards(HabitDataV1 target) {
+		target.clobberTasks(fetchTasks("reward"));
 	}
 
 	private JSONArray fetchTasks(String type) {
@@ -511,11 +205,7 @@ public class HabitConnectionV1 {
 
 	}
 
-	public interface ServerResultCallback {
-		public void serverReply(String s);
-	}
-
-	private static String getStringFromInputStream(InputStream is) {
+	static String getStringFromInputStream(InputStream is) {
 
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
@@ -544,70 +234,4 @@ public class HabitConnectionV1 {
 
 	}
 
-	public boolean isMale() {
-		try {
-			if (data_preferences != null && data_preferences.get("gender") != null) {
-				return data_preferences.get("gender").equals("m");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return true;
-		}
-
-		return true;
-	}
-
-	public boolean showHelm() {
-		try {
-			if (data_preferences != null && data_preferences.getBoolean("showHelm")) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return true;
-		}
-	}
-
-	public String getHair() {
-		try {
-			if (data_preferences != null && data_preferences.get("hair") != null) {
-				return data_preferences.getString("hair");
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return "blond";
-		}
-
-		return "blond";
-	}
-
-	public String getSkin() {
-		try {
-			if (data_preferences != null && data_preferences.get("skin") != null) {
-				return data_preferences.getString("skin");
-
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return "white";
-		}
-
-		return "white";
-	}
-
-	public String getArmorSet() {
-		try {
-			if (data_preferences != null && data_preferences.get("armorSet") != null) {
-				return data_preferences.getString("armorSet");
-
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return "v1";
-		}
-
-		return "v1";
-	}
 }

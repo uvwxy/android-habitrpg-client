@@ -68,7 +68,7 @@ public class SpriteFactoryChar {
 		return bm;
 	}
 
-	public static Bitmap createChar(Context ctx, HabitConnectionV1 habitcon) {
+	public static Bitmap createChar(Context ctx, HabitDataV1 habitcon) {
 		checkAndLoad(ctx);
 
 		int w = maleSprites.getHeight();
@@ -81,7 +81,7 @@ public class SpriteFactoryChar {
 		return bm;
 	}
 
-	public static void renderChar(HabitConnectionV1 habitcon, int w, Canvas canvas) {
+	public static void renderChar(HabitDataV1 habitcon, int w, Canvas canvas) {
 		boolean male = habitcon.isMale();
 		ISpriteConverter isc = male ? scm : scf;
 		Bitmap sprites = male ? maleSprites : femaleSprites;
@@ -93,6 +93,14 @@ public class SpriteFactoryChar {
 		renderShield(isc.getOMShield(habitcon.getShield()), w, canvas, isc, sprites);
 		renderHead(habitcon.getArmorSet().equals("v1"), habitcon.showHelm(), habitcon.isMale(), habitcon.getHead(), w, canvas, isc, sprites);
 		renderWeapon(isc.getOMWeapon(habitcon.getWeapon()), w, canvas, isc, sprites);
+		Paint paint = new Paint();
+		int lvl = 0;
+		try {
+			lvl = (int) habitcon.getLevel();
+		} catch (Exception e) {
+
+		}
+		canvas.drawText("lvl: " + lvl, 0, canvas.getHeight(), paint);
 	}
 
 	public static void renderSkin(int omSkin, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
@@ -143,7 +151,7 @@ public class SpriteFactoryChar {
 		c.drawBitmap(bSrc, src, dst, paint);
 	}
 
-	public static Bitmap addColorHPXPBars(Bitmap bmp, HabitConnectionV1 habitCon) {
+	public static Bitmap addColorHPXPBars(Bitmap bmp, HabitDataV1 habitCon) {
 		if (bmp == null) {
 			throw new RuntimeException("bmp can not be null");
 		}
@@ -160,10 +168,10 @@ public class SpriteFactoryChar {
 		Paint paint = new Paint();
 		c.drawBitmap(bmp, new Matrix(), paint);
 		paint.setColor(HabitColors.colorHP);
-		c.drawRect(0, c.getHeight() - barHeight * 2, (float) (c.getWidth() * habitCon.getHp() / habitCon.getMaxHealth()), c.getHeight() - (barHeight + 1),
+		c.drawRect(0, c.getHeight() - barHeight * 2, (float) (c.getWidth() * habitCon.getHP() / habitCon.getMaxHealth()), c.getHeight() - (barHeight + 1),
 				paint);
 		paint.setColor(HabitColors.colorXP);
-		c.drawRect(0, c.getHeight() - barHeight, (float) (c.getWidth() * habitCon.getExp() / habitCon.getToNextLevel()), c.getHeight() - 1, paint);
+		c.drawRect(0, c.getHeight() - barHeight, (float) (c.getWidth() * habitCon.getXP() / habitCon.getToNextLevel()), c.getHeight() - 1, paint);
 		return bm;
 	}
 }

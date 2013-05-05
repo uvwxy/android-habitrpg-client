@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,11 +27,13 @@ import android.widget.TextView;
 import de.uvwxy.habitrpg.api.HabitColors;
 import de.uvwxy.habitrpg.api.HabitConnectionV1;
 import de.uvwxy.habitrpg.api.HabitConnectionV1.ServerResultCallback;
+import de.uvwxy.habitrpg.api.HabitDataV1;
 
 public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	private Context ctx;
 	private ArrayList<ExpandableTask> listOfAllTasks = null;
 	private LayoutInflater inf;
+	private HabitDataV1 habitData = null;
 	private HabitConnectionV1 habitCon = null;
 
 	private static final boolean BUY = true;
@@ -63,7 +64,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 							try {
 
 								String result = habitCon.updateTask(taskId, upOrCompleted);
-								serverResultCallback.serverReply(result);
+								serverResultCallback.serverReply(result, taskId, upOrCompleted);
 								waitingDialog.dismiss();
 							} catch (ClientProtocolException e) {
 								e.printStackTrace();
@@ -98,7 +99,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 						public void run() {
 							try {
 								String result = habitCon.updateTask(taskId, fDirection);
-								serverResultCallback.serverReply(result);
+								serverResultCallback.serverReply(result, taskId, fDirection);
 							} catch (ClientProtocolException e) {
 								e.printStackTrace();
 							} catch (IOException e) {
@@ -113,12 +114,13 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 
 	}
 
-	public ExpandableTaskViewAdapter(Context ctx, ArrayList<ExpandableTask> list, HabitConnectionV1 habitCon, ServerResultCallback src) {
+	public ExpandableTaskViewAdapter(Context ctx, ArrayList<ExpandableTask> list, HabitConnectionV1 habitCon, HabitDataV1 habitData, ServerResultCallback src) {
 		if (ctx == null || list == null || habitCon == null || src == null) {
 			throw new RuntimeException("Context or list or habitCon was null. uh oh..");
 		}
 		this.ctx = ctx;
 		this.listOfAllTasks = list;
+		this.habitData = habitData;
 		this.habitCon = habitCon;
 		this.serverResultCallback = src;
 		this.inf = LayoutInflater.from(ctx);
@@ -312,6 +314,8 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				cbTodo.setChecked(h.getBoolean("completed"));
 
 				tvTodo.setText(h.getString("text"));
+				habitClick(cbTodo, h.getString("id"), ISCHECKBOX);
+
 				int color = HabitColors.colorFromValue(h.getDouble("value"));
 				int dColor = darkenColor(color);
 				int lColor = lightenColor(color);
@@ -408,18 +412,17 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 			convertView = inf.inflate(R.layout.expandable_dummy, parent, false);
 			return convertView;
 		}
-		
+
 		if (listOfAllTasks.get(groupPosition).getId().equals("idRewards")) {
 			TextView tvRewardGold = (TextView) convertView.findViewById(R.id.tvRewardGold);
 			TextView tvRewardSilver = (TextView) convertView.findViewById(R.id.tvRewardSilver);
-			
+
 			tvRewardGold.setVisibility(View.VISIBLE);
 			tvRewardSilver.setVisibility(View.VISIBLE);
-			
-			tvRewardGold.setText(String.format("%d",habitCon != null ? (int)habitCon.getGP() : 0));
-			tvRewardSilver.setText(String.format("%d",habitCon != null ? (int)(habitCon.getGP()*100.)%100 : 0));
+
+			tvRewardGold.setText(String.format("%d", habitData != null ? (int) habitData.getGP() : 0));
+			tvRewardSilver.setText(String.format("%d", habitData != null ? (int) (habitData.getGP() * 100.) % 100 : 0));
 		}
-		
 
 		LinearLayout llGroup = (LinearLayout) convertView.findViewById(R.id.llGroup);
 		ImageView ivExpanderArrow = (ImageView) convertView.findViewById(R.id.ivExpanderArrow);
@@ -451,4 +454,3 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	}
 
 }
-

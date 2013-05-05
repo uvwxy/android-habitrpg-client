@@ -1,90 +1,104 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ActivityAPISetup" >
 
-    <TextView
-        android:id="@+id/tvURL"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/server_url"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/etServerURL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignLeft="@+id/tvURL"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvURL"
-        android:ems="10"
-        android:inputType="textUri" >
+        android:layout_alignParentTop="true" >
 
-        <requestFocus />
-    </EditText>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/btnUserID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/etServerURL"
-        android:text="@string/user_id"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/tvURL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/server_url"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
-        android:id="@+id/etUserID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnUserID"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/btnUserID"
-        android:ems="10"
-        android:inputType="text"
-        android:minLines="2" />
+            <EditText
+                android:id="@+id/etServerURL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tvURL"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvURL"
+                android:ems="10"
+                android:inputType="textUri" >
 
-    <TextView
-        android:id="@+id/tvAPIToken"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/etUserID"
-        android:text="@string/api_token"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <requestFocus />
+            </EditText>
 
-    <EditText
-        android:id="@+id/etAPIToken"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvAPIToken"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvAPIToken"
-        android:ems="10"
-        android:inputType="text"
-        android:minLines="2" />
+            <TextView
+                android:id="@+id/btnUserID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/etServerURL"
+                android:text="@string/user_id"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/etAPIToken"
-        android:layout_below="@+id/etAPIToken"
-        android:text="@string/save" />
+            <EditText
+                android:id="@+id/etUserID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/btnUserID"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/btnUserID"
+                android:ems="10"
+                android:inputType="text"
+                android:minLines="2" />
 
-    <Button
-        android:id="@+id/btnScanQRCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnSave"
-        android:layout_alignBottom="@+id/btnSave"
-        android:layout_alignLeft="@+id/etAPIToken"
-        android:text="@string/qr_code" />
+            <TextView
+                android:id="@+id/tvAPIToken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/etUserID"
+                android:text="@string/api_token"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-</RelativeLayout>
+            <EditText
+                android:id="@+id/etAPIToken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tvAPIToken"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvAPIToken"
+                android:ems="10"
+                android:inputType="text"
+                android:minLines="2" />
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/etAPIToken"
+                android:layout_below="@+id/etAPIToken"
+                android:text="@string/save" />
+
+            <Button
+                android:id="@+id/btnScanQRCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/btnSave"
+                android:layout_alignBottom="@+id/btnSave"
+                android:layout_alignLeft="@+id/etAPIToken"
+                android:text="@string/qr_code" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>
