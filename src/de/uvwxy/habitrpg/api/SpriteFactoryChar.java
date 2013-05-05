@@ -76,34 +76,60 @@ public class SpriteFactoryChar {
 		Bitmap bm = Bitmap.createBitmap(w, w, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bm);
 
+		renderChar(habitcon, w, canvas);
+
+		return bm;
+	}
+
+	public static void renderChar(HabitConnectionV1 habitcon, int w, Canvas canvas) {
 		boolean male = habitcon.isMale();
 		ISpriteConverter isc = male ? scm : scf;
 		Bitmap sprites = male ? maleSprites : femaleSprites;
 
-		drawSprite(sprites, isc.getOMSkin(habitcon.getSkin()) * w, w, canvas);
-		drawSprite(sprites, isc.getOMHair(habitcon.getHair()) * w, w, canvas);
-		int armorID = isc.getOMArmor(habitcon.getArmor());
+		renderSkin(isc.getOMSkin(habitcon.getSkin()), w, canvas, isc, sprites);
+		renderHair(isc.getOMHair(habitcon.getHair()), w, canvas, isc, sprites);
 
-		if (!habitcon.isMale() && habitcon.getArmor() < 1 && habitcon.getArmorSet().equals("v1")) {
+		renderArmor(habitcon.getArmorSet().equals("v1"), habitcon.isMale(), isc.getOMArmor(habitcon.getArmor()), w, canvas, isc, sprites);
+		renderShield(isc.getOMShield(habitcon.getShield()), w, canvas, isc, sprites);
+		renderHead(habitcon.getArmorSet().equals("v1"), habitcon.showHelm(), habitcon.isMale(), habitcon.getHead(), w, canvas, isc, sprites);
+		renderWeapon(isc.getOMWeapon(habitcon.getWeapon()), w, canvas, isc, sprites);
+	}
+
+	public static void renderSkin(int omSkin, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
+		drawSprite(sprites, omSkin * w, w, canvas);
+	}
+
+	public static void renderHair(int omHair, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
+		drawSprite(sprites, omHair * w, w, canvas);
+	}
+
+	public static void renderArmor(boolean armorSetV1, boolean isMale, int armorID, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
+		if (!isMale && armorID < 1 && armorSetV1) {
 			armorID++;
 		}
 		drawSprite(sprites, armorID * w, w, canvas);
+	}
 
-		drawSprite(sprites, isc.getOMShield(habitcon.getShield()) * w, w, canvas);
-		if (habitcon.showHelm()) {
-			if (habitcon.isMale()) {
-				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
-			} else if (habitcon.getHead() <= 1 || habitcon.getArmorSet().equals("v1")) {
-				drawSprite(sprites, isc.getOMHead(habitcon.getHead()) * w, w, canvas);
+	public static void renderShield(int omShield, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
+		drawSprite(sprites, omShield * w, w, canvas);
+	}
+
+	public static void renderHead(boolean armorSetV1, boolean showHelm, boolean isMale, int headID, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
+		if (showHelm) {
+			if (isMale) {
+				drawSprite(sprites, isc.getOMHead(headID) * w, w, canvas);
+			} else if (headID <= 1 || armorSetV1) {
+				drawSprite(sprites, isc.getOMHead(headID) * w, w, canvas);
 			} else {
-				drawSprite(sprites, (isc.getOMHead(habitcon.getHead()) - 1) * w, w, canvas);
+				drawSprite(sprites, (isc.getOMHead(headID) - 1) * w, w, canvas);
 			}
 		} else {
 			drawSprite(sprites, isc.getOMHead(0) * w, w, canvas);
 		}
-		drawSprite(sprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
+	}
 
-		return bm;
+	public static void renderWeapon(int omWeapon, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
+		drawSprite(sprites, omWeapon * w, w, canvas);
 	}
 
 	public static void drawSprite(Bitmap bSrc, int offset, int width, Canvas c) {
@@ -130,7 +156,7 @@ public class SpriteFactoryChar {
 
 		Bitmap bm = Bitmap.createBitmap(w, h + barHeight * 2, Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(bm);
-		
+
 		Paint paint = new Paint();
 		c.drawBitmap(bmp, new Matrix(), paint);
 		paint.setColor(HabitColors.colorHP);
