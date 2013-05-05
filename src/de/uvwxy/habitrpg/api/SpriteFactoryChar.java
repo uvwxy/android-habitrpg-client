@@ -93,6 +93,14 @@ public class SpriteFactoryChar {
 		renderShield(isc.getOMShield(habitcon.getShield()), w, canvas, isc, sprites);
 		renderHead(habitcon.getArmorSet().equals("v1"), habitcon.showHelm(), habitcon.isMale(), habitcon.getHead(), w, canvas, isc, sprites);
 		renderWeapon(isc.getOMWeapon(habitcon.getWeapon()), w, canvas, isc, sprites);
+		Paint paint = new Paint();
+		int lvl = 0;
+		try {
+			lvl = (int) habitcon.getLevel();
+		} catch (Exception e){
+			
+		}
+		canvas.drawText("lvl: " + lvl, 0, canvas.getHeight(), paint);
 	}
 
 	public static void renderSkin(int omSkin, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
