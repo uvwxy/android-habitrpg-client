@@ -12,7 +12,7 @@
         <RelativeLayout
             android:id="@+id/rlGroup"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" >
 
             <TextView
                 android:id="@+id/tvGroupTitle"
@@ -26,13 +26,36 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tvRewardGold"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_toLeftOf="@+id/tvRewardSilver"
+                android:drawableRight="@drawable/coin_gold"
+                android:gravity="center_vertical"
+                android:paddingRight="4dp"
+                android:text="20"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvRewardSilver"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_toLeftOf="@+id/ivExpanderArrow"
+                android:drawableRight="@drawable/coin_silver"
+                android:gravity="center_vertical"
+                android:paddingRight="4dp"
+                android:text="20"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/ivExpanderArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true" />
-
         </RelativeLayout>
     </LinearLayout>
 

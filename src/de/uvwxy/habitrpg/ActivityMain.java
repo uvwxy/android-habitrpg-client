@@ -113,10 +113,10 @@ public class ActivityMain extends Activity {
 
 	private void initGuiFromHabit(final HabitConnectionV1 habitCon) {
 
-		ExpandableTask habits = new ExpandableTask();
-		ExpandableTask dailies = new ExpandableTask();
-		ExpandableTask todos = new ExpandableTask();
-		ExpandableTask rewards = new ExpandableTask();
+		ExpandableTask habits = new ExpandableTask("idHabits");
+		ExpandableTask dailies = new ExpandableTask("idDailies");
+		ExpandableTask todos = new ExpandableTask("idTodos");
+		ExpandableTask rewards = new ExpandableTask("idRewards");
 
 		habits.setTitle("Habits");
 		dailies.setTitle("Dailies");
@@ -138,7 +138,7 @@ public class ActivityMain extends Activity {
 		tasksList.add(dailies);
 		tasksList.add(todos);
 		tasksList.add(rewards);
-		ExpandableTask dummy = new ExpandableTask();
+		ExpandableTask dummy = new ExpandableTask("idDummy");
 		dummy.setTitle("dummy");
 		tasksList.add(dummy);
 

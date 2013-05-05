@@ -408,6 +408,18 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 			convertView = inf.inflate(R.layout.expandable_dummy, parent, false);
 			return convertView;
 		}
+		
+		if (listOfAllTasks.get(groupPosition).getId().equals("idRewards")) {
+			TextView tvRewardGold = (TextView) convertView.findViewById(R.id.tvRewardGold);
+			TextView tvRewardSilver = (TextView) convertView.findViewById(R.id.tvRewardSilver);
+			
+			tvRewardGold.setVisibility(View.VISIBLE);
+			tvRewardSilver.setVisibility(View.VISIBLE);
+			
+			tvRewardGold.setText(String.format("%d",habitCon != null ? (int)habitCon.getGP() : 0));
+			tvRewardSilver.setText(String.format("%d",habitCon != null ? (int)(habitCon.getGP()*100.)%100 : 0));
+		}
+		
 
 		LinearLayout llGroup = (LinearLayout) convertView.findViewById(R.id.llGroup);
 		ImageView ivExpanderArrow = (ImageView) convertView.findViewById(R.id.ivExpanderArrow);
@@ -439,3 +451,4 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 	}
 
 }
+
