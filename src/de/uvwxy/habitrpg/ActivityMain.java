@@ -100,10 +100,13 @@ public class ActivityMain extends Activity {
 		public void serverReply(String s, String taskID) {
 			try {
 				JSONObject o = new JSONObject(s);
-				double oldExp = habitData.getExp();
+				double oldExp = habitData.getXP();
 				double oldGp = habitData.getGP();
-				// TODO: update exp/gp/hp/lvl in habitCon/JSON
+				double oldHp = habitData.getHP();
+				double oldLvl = habitData.getLevel();
 
+				// TODO: display diff
+				habitData.applyServerResultToData(o, taskID);
 				updateStats(o.getDouble("exp"), o.getDouble("gp"), o.getDouble("hp"), o.getDouble("lvl"), o.getDouble("delta"));
 
 			} catch (JSONException e) {
@@ -144,7 +147,7 @@ public class ActivityMain extends Activity {
 		dummy.setTitle("dummy");
 		tasksList.add(dummy);
 
-		updateStats(habitData.getExp(), habitData.getGP(), habitData.getHp(), habitData.getLevel(), 0);
+		updateStats(habitData.getXP(), habitData.getGP(), habitData.getHP(), habitData.getLevel(), 0);
 
 		updateTasksList();
 
@@ -240,8 +243,8 @@ public class ActivityMain extends Activity {
 						if (habitCon == null) {
 							return;
 						}
-						updateUi(tvHP, habitData.getMaxHealth(), habitData.getHp());
-						updateUi(tvXP, habitData.getToNextLevel(), habitData.getExp());
+						updateUi(tvHP, habitData.getMaxHealth(), habitData.getHP());
+						updateUi(tvXP, habitData.getToNextLevel(), habitData.getXP());
 					}
 				});
 

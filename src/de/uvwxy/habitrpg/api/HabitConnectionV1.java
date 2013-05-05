@@ -72,7 +72,7 @@ public class HabitConnectionV1 {
 		JSONObject data;
 		try {
 			data = new JSONObject(getJSONResponse("/api/v1/user"));
-			habitData.data_main = data;
+			habitData.root = data;
 			return habitData.setupData(data);
 		} catch (ClientProtocolException e) {
 			Log.e("HABIT", "Error: " + e.getMessage());
@@ -88,19 +88,19 @@ public class HabitConnectionV1 {
 	}
 
 	public void fetchHabits(HabitDataV1 target) {
-		target.data_habits = fetchTasks("habit");
+		target.clobberTasks(fetchTasks("habit"));
 	}
 
 	public void fetchDailies(HabitDataV1 target) {
-		target.data_dailies = fetchTasks("daily");
+		target.clobberTasks(fetchTasks("daily"));
 	}
 
 	public void fetchTodos(HabitDataV1 target) {
-		target.data_todos = fetchTasks("todo");
+		target.clobberTasks(fetchTasks("todo"));
 	}
 
 	public void fetchRewards(HabitDataV1 target) {
-		target.data_rewards = fetchTasks("reward");
+		target.clobberTasks(fetchTasks("reward"));
 	}
 
 	private JSONArray fetchTasks(String type) {

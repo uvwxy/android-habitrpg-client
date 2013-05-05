@@ -168,10 +168,10 @@ public class SpriteFactoryChar {
 		Paint paint = new Paint();
 		c.drawBitmap(bmp, new Matrix(), paint);
 		paint.setColor(HabitColors.colorHP);
-		c.drawRect(0, c.getHeight() - barHeight * 2, (float) (c.getWidth() * habitCon.getHp() / habitCon.getMaxHealth()), c.getHeight() - (barHeight + 1),
+		c.drawRect(0, c.getHeight() - barHeight * 2, (float) (c.getWidth() * habitCon.getHP() / habitCon.getMaxHealth()), c.getHeight() - (barHeight + 1),
 				paint);
 		paint.setColor(HabitColors.colorXP);
-		c.drawRect(0, c.getHeight() - barHeight, (float) (c.getWidth() * habitCon.getExp() / habitCon.getToNextLevel()), c.getHeight() - 1, paint);
+		c.drawRect(0, c.getHeight() - barHeight, (float) (c.getWidth() * habitCon.getXP() / habitCon.getToNextLevel()), c.getHeight() - 1, paint);
 		return bm;
 	}
 }
