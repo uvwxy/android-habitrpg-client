@@ -163,7 +163,7 @@ public class SpriteFactoryChar {
 			// dont draw "unset" weapons
 			return;
 		}
-		Rect src = new Rect(offset, 0, offset + width, c.getHeight());
+		Rect src = new Rect(offset, 0, offset + width, bSrc.getHeight());
 		RectF dst = new RectF(0, 0, c.getWidth(), c.getHeight());
 		Paint paint = new Paint();
 		paint.setFilterBitmap(false);

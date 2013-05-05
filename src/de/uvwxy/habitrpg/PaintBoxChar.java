@@ -57,8 +57,8 @@ public class PaintBoxChar extends PaintBox {
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
 		SpriteFactoryChar.renderCharWithoutWeapon(habitData, origWidth, canvas);
-		int cx = origWidth / 2 + origWidth / 6;
-		int cy = origHeight / 2 + origHeight / 8;
+		int cx = canvas.getWidth() / 2 + canvas.getWidth() / 6;
+		int cy = canvas.getHeight() / 2 + canvas.getHeight() / 8;
 
 		if (numWorkingThreads > 0) {
 
