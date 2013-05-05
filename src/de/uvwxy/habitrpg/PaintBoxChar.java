@@ -24,6 +24,8 @@ public class PaintBoxChar extends PaintBox {
 	private long degrees;
 
 	private long animSpeed = 500;
+	private long lastCheck = System.currentTimeMillis();
+	private long counter = System.currentTimeMillis();
 
 	public PaintBoxChar(Context context) {
 		super(context);
@@ -58,8 +60,11 @@ public class PaintBoxChar extends PaintBox {
 		int cx = origWidth / 2 + origWidth / 6;
 		int cy = origHeight / 2 + origHeight / 8;
 
-		degrees = System.currentTimeMillis();
 		if (numWorkingThreads > 0) {
+
+			counter += (System.currentTimeMillis() - lastCheck) / numWorkingThreads;
+			degrees = counter;
+			
 			degrees %= animSpeed;
 
 			if (degrees < animSpeed / 2) {
@@ -73,6 +78,8 @@ public class PaintBoxChar extends PaintBox {
 		} else {
 			degrees = 0;
 		}
+
+		lastCheck = System.currentTimeMillis();
 		SpriteFactoryChar.renderWeaponOnly(habitData, origWidth, canvas, degrees, cx, cy);
 	}
 
