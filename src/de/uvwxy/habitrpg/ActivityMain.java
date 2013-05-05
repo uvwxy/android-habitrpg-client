@@ -175,12 +175,13 @@ public class ActivityMain extends Activity {
 				habitCon.storeLocalData(ctx);
 			} else {
 
-				updateUi(tvName, getText(R.string.name) + "Could not load user data, is the setup correct?" + " " + "(Menu -> \"Change Config\")");
+				updateUi(tvHPString, "Could not load user data, setup correct?");
+				updateUi(tvXPString, "(Menu -> \"Change Config\")");
 			}
 
 			dismissWD();
 		} else {
-			updateUi(tvName, getText(R.string.name) + "Could not find server");
+			updateUi(tvHPString, "Could not find server");
 			updateUiToast("Please take a look at the server settings");
 		}
 
@@ -258,15 +259,14 @@ public class ActivityMain extends Activity {
 					}
 				});
 
-				
 				elvTasks.post(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						elvTasks.setIndicatorBounds(0,0);
+						elvTasks.setIndicatorBounds(0, 0);
 					}
 				});
-				
+
 				elvTasks.setSelector(android.R.color.transparent);
 
 				Toast.makeText(ctx, "Loaded offline data, refresh to update", Toast.LENGTH_SHORT).show();
@@ -274,7 +274,8 @@ public class ActivityMain extends Activity {
 				startBackgroundPullDataThread();
 			}
 		} else {
-			updateUi(tvName, getText(R.string.name) + "Please setup your HabitRPG." + " " + "(Menu -> \"Change Config\")");
+			updateUi(tvHPString, "Please setup your HabitRPG.");
+			updateUi(tvXPString, "(Menu -> \"Change Config\")");
 		}
 
 		super.onResume();
@@ -300,7 +301,7 @@ public class ActivityMain extends Activity {
 			Intent intent = new Intent(this, ActivityAbout.class);
 			startActivity(intent);
 		}
-		
+
 		return super.onMenuItemSelected(featureId, item);
 	}
 
@@ -375,7 +376,7 @@ public class ActivityMain extends Activity {
 				for (int i = 0; i < count; i++) {
 					elvTasks.expandGroup(i);
 				}
-				
+
 			}
 		};
 
@@ -435,14 +436,14 @@ public class ActivityMain extends Activity {
 	}
 
 	private void updateStats(double exp, double gp, double hp, double lvl, double delta) {
-		updateUi(tvName, getText(R.string.name) + habitCon.getUserName() + " [lvl: " + ((int) lvl) + "]");
+		updateUi(tvName, habitCon.getUserName());
 		String format = String.format("" + getText(R.string._gold) + "%.2f", gp);
 
 		// TODO: update this in review Section...
 		// updateUi(tvGP, format);
 
-		updateUi(tvHPString, String.format(Locale.US, "%.1f", hp));
-		updateUi(tvXPString, String.format(Locale.US, "%.1f", exp));
+		updateUi(tvHPString, String.format(Locale.US, "%d", (int) hp));
+		updateUi(tvXPString, String.format(Locale.US, "%d", (int) exp));
 		updateUiCharIcon();
 
 		updateUi(tvHP, habitCon.getMaxHealth(), hp);
