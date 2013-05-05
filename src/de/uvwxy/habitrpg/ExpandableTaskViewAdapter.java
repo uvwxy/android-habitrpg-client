@@ -59,6 +59,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 						@Override
 						public void run() {
 							try {
+								ActivityMain.pbChar.addHabitWorkingThreadCount();
 
 								String result = habitCon.updateTask(taskId, upOrCompleted);
 								serverResultCallback.serverReply(result, taskId, upOrCompleted);
@@ -82,12 +83,12 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 					CheckBox cb;
-					if (v instanceof CheckBox){
+					if (v instanceof CheckBox) {
 						cb = (CheckBox) v;
 					}
-					
+
 					boolean isChecked = ((CheckBox) v).isChecked();
-					
+
 					boolean direction = false;
 					if (isChecked) {
 						direction = COMPLETED;
@@ -101,6 +102,8 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 						@Override
 						public void run() {
 							try {
+								ActivityMain.pbChar.addHabitWorkingThreadCount();
+
 								String result = habitCon.updateTask(taskId, fDirection);
 								serverResultCallback.serverReply(result, taskId, fDirection);
 							} catch (ClientProtocolException e) {
@@ -113,7 +116,6 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 					t.start();
 				}
 
-				
 			});
 		}
 

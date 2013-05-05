@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 public class HabitDataV1 {
 
@@ -35,12 +34,7 @@ public class HabitDataV1 {
 
 	public boolean applyServerResultToData(JSONObject o, String taskID, boolean upOrCompleted) {
 		try {
-			Log.i("data_main", "gp = " + getGP());
-			Log.i("data_main", "hp" + getHP());
-			Log.i("data_main", "lvl = " + getLevel());
-			Log.i("data_main", "exp" + getXP());
-			Log.i("data_main", "stats" + root.getJSONObject("stats"));
-
+			
 			root.getJSONObject("stats").put("gp", o.getDouble("gp"));
 			root.getJSONObject("stats").put("hp", o.getDouble("hp"));
 			root.getJSONObject("stats").put("lvl", o.getDouble("lvl"));
@@ -68,12 +62,6 @@ public class HabitDataV1 {
 			tasks.put(task.getString("id"), task);
 			root.put("tasks", tasks);
 
-			Log.i("data_main", "gp = " + getGP());
-			Log.i("data_main", "hp" + getHP());
-			Log.i("data_main", "lvl = " + getLevel());
-			Log.i("data_main", "exp" + getXP());
-
-			Log.i("data_main", "stats" + root.getJSONObject("stats"));
 			// unused: o.getDouble("delta");
 			return true;
 		} catch (JSONException e) {
@@ -352,16 +340,13 @@ public class HabitDataV1 {
 			FileInputStream fin = ctx.openFileInput(HABIT_SAV);
 			String dataJSON = HabitConnectionV1.getStringFromInputStream(fin);
 			if (dataJSON == null) {
-				Log.e("HABIT", "Error: dataJSON was null");
 				return false;
 			}
 			data = new JSONObject(dataJSON);
 			return setupData(data);
 		} catch (FileNotFoundException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (JSONException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return false;
@@ -383,7 +368,6 @@ public class HabitDataV1 {
 
 			return true;
 		} catch (JSONException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return false;
@@ -408,10 +392,8 @@ public class HabitDataV1 {
 			FileOutputStream fout = ctx.openFileOutput(HABIT_SAV, Context.MODE_PRIVATE);
 			fout.write(dataJSON.getBytes());
 		} catch (FileNotFoundException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 

@@ -17,22 +17,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin" >
 
-            <ImageView
-                android:id="@+id/ivChar"
-                android:layout_width="@dimen/icon_width"
-                android:layout_height="@dimen/icon_height"
+            <de.uvwxy.habitrpg.PaintBoxChar
+                android:id="@+id/pbChar"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="14dp"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="@string/your_character_icon"
-                android:scaleType="fitCenter"
-                android:src="@drawable/dead" />
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ivChar"
                 android:layout_centerHorizontal="true"
+                android:layout_below="@+id/pbChar"
                 android:gravity="center_horizontal"
                 android:text="@string/name" />
         </RelativeLayout>

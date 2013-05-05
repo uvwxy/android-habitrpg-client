@@ -26,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
 
 public class HabitConnectionV1 {
 
@@ -75,12 +74,10 @@ public class HabitConnectionV1 {
 			habitData.root = data;
 			return habitData.setupData(data);
 		} catch (ClientProtocolException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			Log.e("HABIT", "Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 

@@ -82,6 +82,15 @@ public class SpriteFactoryChar {
 	}
 
 	public static void renderChar(HabitDataV1 habitcon, int w, Canvas canvas) {
+		renderCharWithoutWeapon(habitcon, w, canvas);
+
+		boolean male = habitcon.isMale();
+		ISpriteConverter isc = male ? scm : scf;
+		Bitmap sprites = male ? maleSprites : femaleSprites;
+		renderWeapon(isc.getOMWeapon(habitcon.getWeapon()), w, canvas, isc, sprites);
+	}
+
+	public static void renderCharWithoutWeapon(HabitDataV1 habitcon, int w, Canvas canvas) {
 		boolean male = habitcon.isMale();
 		ISpriteConverter isc = male ? scm : scf;
 		Bitmap sprites = male ? maleSprites : femaleSprites;
@@ -92,7 +101,6 @@ public class SpriteFactoryChar {
 		renderArmor(habitcon.getArmorSet().equals("v1"), habitcon.isMale(), isc.getOMArmor(habitcon.getArmor()), w, canvas, isc, sprites);
 		renderShield(isc.getOMShield(habitcon.getShield()), w, canvas, isc, sprites);
 		renderHead(habitcon.getArmorSet().equals("v1"), habitcon.showHelm(), habitcon.isMale(), habitcon.getHead(), w, canvas, isc, sprites);
-		renderWeapon(isc.getOMWeapon(habitcon.getWeapon()), w, canvas, isc, sprites);
 		Paint paint = new Paint();
 		int lvl = 0;
 		try {
@@ -101,6 +109,16 @@ public class SpriteFactoryChar {
 
 		}
 		canvas.drawText("lvl: " + lvl, 0, canvas.getHeight(), paint);
+	}
+
+	public static void renderWeaponOnly(HabitDataV1 habitcon, int w, Canvas canvas, float degrees, int cx, int cy) {
+		boolean male = habitcon.isMale();
+		ISpriteConverter isc = male ? scm : scf;
+		Bitmap sprites = male ? maleSprites : femaleSprites;
+		canvas.save();
+		canvas.rotate(degrees, cx, cy);
+		drawSprite(sprites, isc.getOMWeapon(habitcon.getWeapon()) * w, w, canvas);
+		canvas.restore();
 	}
 
 	public static void renderSkin(int omSkin, int w, Canvas canvas, ISpriteConverter isc, Bitmap sprites) {
@@ -148,6 +166,7 @@ public class SpriteFactoryChar {
 		Rect src = new Rect(offset, 0, offset + width, c.getHeight());
 		RectF dst = new RectF(0, 0, c.getWidth(), c.getHeight());
 		Paint paint = new Paint();
+		paint.setFilterBitmap(false);
 		c.drawBitmap(bSrc, src, dst, paint);
 	}
 
@@ -166,6 +185,8 @@ public class SpriteFactoryChar {
 		Canvas c = new Canvas(bm);
 
 		Paint paint = new Paint();
+		paint.setFilterBitmap(false);
+		
 		c.drawBitmap(bmp, new Matrix(), paint);
 		paint.setColor(HabitColors.colorHP);
 		c.drawRect(0, c.getHeight() - barHeight * 2, (float) (c.getWidth() * habitCon.getHP() / habitCon.getMaxHealth()), c.getHeight() - (barHeight + 1),
