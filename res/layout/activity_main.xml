@@ -44,8 +44,8 @@
             android:layout_alignBottom="@+id/rlIcon"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/rlIcon"
-            android:layout_marginRight="14dp"
             android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:layout_toRightOf="@id/rlIcon" >
 
             <RelativeLayout
@@ -62,9 +62,10 @@
 
                     <ImageView
                         android:id="@+id/ivHPHeart"
-                        android:layout_width="@dimen/hpxp_bar_height_embedded"
-                        android:layout_height="@dimen/hpxp_bar_height_embedded"
+                        android:layout_width="@dimen/icon_hpxp_height_embedded"
+                        android:layout_height="@dimen/icon_hpxp_height_embedded"
                         android:layout_marginBottom="2dp"
+                        android:layout_marginRight="1dp"
                         android:layout_marginTop="2dp"
                         android:src="@drawable/glyphicons_012_heart" />
 
@@ -73,7 +74,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/hpxp_bar_height"
                         android:layout_toRightOf="@+id/ivHPHeart"
-                        android:background="@drawable/layout_box_reward" />
+                        android:background="@drawable/layout_box_hpxp" />
 
                     <TextView
                         android:id="@+id/tvHP"
@@ -104,9 +105,10 @@
 
                     <ImageView
                         android:id="@+id/ivXPStar"
-                        android:layout_width="@dimen/hpxp_bar_height_embedded"
-                        android:layout_height="@dimen/hpxp_bar_height_embedded"
+                        android:layout_width="@dimen/icon_hpxp_height_embedded"
+                        android:layout_height="@dimen/icon_hpxp_height_embedded"
                         android:layout_marginBottom="2dp"
+                        android:layout_marginRight="1dp"
                         android:layout_marginTop="2dp"
                         android:src="@drawable/glyphicons_049_star" />
 
@@ -115,7 +117,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/hpxp_bar_height"
                         android:layout_toRightOf="@+id/ivXPStar"
-                        android:background="@drawable/layout_box_reward" />
+                        android:background="@drawable/layout_box_hpxp" />
 
                     <TextView
                         android:id="@+id/tvXP"
