@@ -35,18 +35,30 @@ public class HabitDataV1 {
 
 	public boolean applyServerResultToData(JSONObject o, String taskID) {
 		try {
+			Log.i("data_main", "gp = " + getGP());
+			Log.i("data_main", "hp" + getHP());
+			Log.i("data_main", "lvl = " + getLevel());
+			Log.i("data_main", "exp" + getXP());
+			Log.i("data_main", "stats" + root.getJSONObject("stats"));
+			
 			root.getJSONObject("stats").put("gp", o.getDouble("gp"));
 			root.getJSONObject("stats").put("hp", o.getDouble("hp"));
 			root.getJSONObject("stats").put("lvl", o.getDouble("lvl"));
 			root.getJSONObject("stats").put("exp", o.getDouble("exp"));
 
-			Log.i("data_main", root.toString());
+			
 			JSONObject task = getTask(taskID);
 			JSONObject tasks = root.getJSONObject("tasks");
 			task.put("value", task.getDouble("value") + o.getDouble("delta"));
 			tasks.put(task.getString("id"), task);
 			root.put("tasks", tasks);
 
+			Log.i("data_main", "gp = " + getGP());
+			Log.i("data_main", "hp" + getHP());
+			Log.i("data_main", "lvl = " + getLevel());
+			Log.i("data_main", "exp" + getXP());
+			
+			Log.i("data_main", "stats" + root.getJSONObject("stats"));
 			// unused: o.getDouble("delta");
 			return true;
 		} catch (JSONException e) {
@@ -70,7 +82,7 @@ public class HabitDataV1 {
 
 	public String getArmorSet() {
 		try {
-			return root.getJSONObject("preferences").getString("armorSeT");
+			return root.getJSONObject("preferences").getString("armorSet");
 
 		} catch (JSONException e) {
 			e.printStackTrace();

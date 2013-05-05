@@ -108,7 +108,6 @@ public class ActivityMain extends Activity {
 				// TODO: display diff
 				habitData.applyServerResultToData(o, taskID);
 				updateStats(o.getDouble("exp"), o.getDouble("gp"), o.getDouble("hp"), o.getDouble("lvl"), o.getDouble("delta"));
-
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -206,7 +205,6 @@ public class ActivityMain extends Activity {
 		}
 
 		initGUI();
-		updateUiCharIcon();
 	}
 
 	@Override
@@ -258,6 +256,7 @@ public class ActivityMain extends Activity {
 
 				elvTasks.setSelector(android.R.color.transparent);
 
+				updateUiCharIcon();
 				Toast.makeText(ctx, "Loaded offline data, refresh to update", Toast.LENGTH_SHORT).show();
 			} else {
 				startBackgroundPullDataThread();
@@ -323,6 +322,10 @@ public class ActivityMain extends Activity {
 
 	@Override
 	protected void onPause() {
+		if (habitData != null) {
+			habitData.storeLocalData(getApplicationContext());
+			updateWidget();
+		}
 		super.onPause();
 	}
 
