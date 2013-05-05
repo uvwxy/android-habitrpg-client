@@ -102,7 +102,7 @@ public class ActivityMain extends Activity {
 	public ServerResultCallback habitResultCallback = new ServerResultCallback() {
 
 		@Override
-		public void serverReply(String s, String taskID) {
+		public void serverReply(String s, String taskID, boolean upOrCompleted) {
 			try {
 				JSONObject o = new JSONObject(s);
 				double oldExp = habitData.getXP();
@@ -111,7 +111,7 @@ public class ActivityMain extends Activity {
 				double oldLvl = habitData.getLevel();
 
 				// TODO: display diff
-				habitData.applyServerResultToData(o, taskID);
+				habitData.applyServerResultToData(o, taskID, upOrCompleted);
 				refreshExpandableTasks(habitData);
 				updateTasksList();
 

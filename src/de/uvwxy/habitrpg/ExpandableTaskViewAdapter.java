@@ -64,7 +64,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 							try {
 
 								String result = habitCon.updateTask(taskId, upOrCompleted);
-								serverResultCallback.serverReply(result, taskId);
+								serverResultCallback.serverReply(result, taskId, upOrCompleted);
 								waitingDialog.dismiss();
 							} catch (ClientProtocolException e) {
 								e.printStackTrace();
@@ -99,7 +99,7 @@ public class ExpandableTaskViewAdapter extends BaseExpandableListAdapter {
 						public void run() {
 							try {
 								String result = habitCon.updateTask(taskId, fDirection);
-								serverResultCallback.serverReply(result, taskId);
+								serverResultCallback.serverReply(result, taskId, fDirection);
 							} catch (ClientProtocolException e) {
 								e.printStackTrace();
 							} catch (IOException e) {

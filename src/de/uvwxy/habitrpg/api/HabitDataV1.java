@@ -33,23 +33,38 @@ public class HabitDataV1 {
 	//	JSONArray data_todos;
 	//	JSONArray data_todos_done;
 
-	public boolean applyServerResultToData(JSONObject o, String taskID) {
+	public boolean applyServerResultToData(JSONObject o, String taskID, boolean upOrCompleted) {
 		try {
 			Log.i("data_main", "gp = " + getGP());
 			Log.i("data_main", "hp" + getHP());
 			Log.i("data_main", "lvl = " + getLevel());
 			Log.i("data_main", "exp" + getXP());
 			Log.i("data_main", "stats" + root.getJSONObject("stats"));
-			
+
 			root.getJSONObject("stats").put("gp", o.getDouble("gp"));
 			root.getJSONObject("stats").put("hp", o.getDouble("hp"));
 			root.getJSONObject("stats").put("lvl", o.getDouble("lvl"));
 			root.getJSONObject("stats").put("exp", o.getDouble("exp"));
 
-			
 			JSONObject task = getTask(taskID);
 			JSONObject tasks = root.getJSONObject("tasks");
 			task.put("value", task.getDouble("value") + o.getDouble("delta"));
+
+			String taskType = task.getString("type");
+
+			if (taskType.equals("habit")) {
+				// nothing to do here
+			}
+			if (taskType.equals("reward")) {
+				// nothing to do here
+			}
+			if (taskType.equals("daily")) {
+				task.put("completed", upOrCompleted);
+			}
+			if (taskType.equals("todo")) {
+				task.put("completed", upOrCompleted);
+			}
+
 			tasks.put(task.getString("id"), task);
 			root.put("tasks", tasks);
 
@@ -57,7 +72,7 @@ public class HabitDataV1 {
 			Log.i("data_main", "hp" + getHP());
 			Log.i("data_main", "lvl = " + getLevel());
 			Log.i("data_main", "exp" + getXP());
-			
+
 			Log.i("data_main", "stats" + root.getJSONObject("stats"));
 			// unused: o.getDouble("delta");
 			return true;

@@ -40,7 +40,7 @@ public class HabitConnectionV1 {
 	private String apiToken;
 
 	public interface ServerResultCallback {
-		public void serverReply(String s, String taskId);
+		public void serverReply(String s, String taskId, boolean upOrCompleted);
 	}
 
 	public HabitConnectionV1() {
