@@ -11,37 +11,42 @@
         android:layout_height="wrap_content"
         android:background="@drawable/layout_border" >
 
-        <ImageView
-            android:id="@+id/ivChar"
-            android:layout_width="@dimen/icon_width"
-            android:layout_height="@dimen/icon_height"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="4dp"
-            android:contentDescription="@string/your_character_icon"
-            android:scaleType="fitCenter"
-            android:src="@drawable/dead" />
-
-        <TextView
-            android:id="@+id/tvName"
+        <RelativeLayout
+            android:id="@+id/rlIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/ivChar"
-            android:layout_alignRight="@+id/ivChar"
-            android:layout_below="@+id/ivChar"
-            android:gravity="center_horizontal"
-            android:text="@string/name" />
+            android:layout_marginLeft="@dimen/activity_horizontal_margin" >
+
+            <ImageView
+                android:id="@+id/ivChar"
+                android:layout_width="@dimen/icon_width"
+                android:layout_height="@dimen/icon_height"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/your_character_icon"
+                android:scaleType="fitCenter"
+                android:src="@drawable/dead" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivChar"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="@string/name" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tvName"
+            android:layout_alignBottom="@+id/rlIcon"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/ivChar"
+            android:layout_alignTop="@+id/rlIcon"
             android:layout_marginRight="14dp"
-            android:layout_toRightOf="@id/ivChar" >
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@id/rlIcon" >
 
             <RelativeLayout
                 android:id="@+id/relativeLayout0"
