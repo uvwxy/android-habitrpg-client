@@ -3,6 +3,11 @@ android-habitrpg-client
 
 Unofficial HabitRPG native Android Client with Widget
 
+# Current Status
+
+At the moment this client is borked, i.e. it only works with the old HabitRPG API v1.
+You can download the app from the [Play Store](https://play.google.com/store/apps/details?id=de.uvwxy.habitrpg)
+
 # Build
 
 The client depends on Android_PaintBox
