@@ -18,6 +18,14 @@ git clone git@bitbucket.org:uvwxy/paintbox.git Android_PaintBox
 
 Add this library to your Eclipse workspace and refresh your project. It should find the referenced project (Check it under "Project" -> Preferences -> Android -> "Libraries")
 
+
+# TODO
+
+- model the classes exposed by the API v2 using [GSON](https://sites.google.com/site/gson/gson-user-guide#TOC-Object-Examples)
+- character rendering update to all new sprites
+- include new/updates features (tavern, ...)
+- include CardsUI (will be released on GitHub soon)
+
 # Old Repo
 
 The old repository is [here](https://bitbucket.org/uvwxy/android-habitrpg-client/).
