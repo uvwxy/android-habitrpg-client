@@ -21,7 +21,7 @@ Add this library to your Eclipse workspace and refresh your project. It should f
 
 # TODO
 
-- model the classes exposed by the API v2 using [GSON](https://sites.google.com/site/gson/gson-user-guide#TOC-Object-Examples) and use [Lombok](http://projectlombok.org/) to avoid writing getters/setters,...
+- model the classes exposed by the API v2 using [GSON](https://sites.google.com/site/gson/gson-user-guide#TOC-Object-Examples) and use [Lombok](http://projectlombok.org/) to avoid writing getters/setters,... (maybe use [this](http://www.jsonschema2pojo.org/))
 - character rendering update to all new sprites
 - include new/updates features (tavern, ...)
 - include CardsUI (will be released on GitHub soon)
